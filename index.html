@@ -863,16 +863,16 @@ print(df['活跃度'].value_counts())`,
                 },
                 practice: {
                     tasks: [
-                        "读取 user_behavior.csv 数据",
+                        "用纯Python模拟数据（不用pandas）",
                         "用中位数填充消费金额和消费频次的缺失值",
                         "用3sigma原则找出消费金额的异常值",
                         "将消费金额分为低(0-200)/中(200-500)/高(500+)三档"
                     ],
-                    template: `import pandas as pd
-import random
+                    template: `import random
+import math
 random.seed(42)
 
-# 模拟数据（实际练习时会读取真实CSV）
+# 模拟数据（用Python列表代替pandas）
 data = []
 for i in range(100):
     amount = round(random.uniform(50, 1000), 2) if random.random() > 0.1 else None
@@ -883,34 +883,49 @@ for i in range(100):
         '消费频次': freq
     })
 
-df = pd.DataFrame(data)
 print("原始数据:")
-print(df.head(10))
+for row in data[:5]:
+    print(row)
+
+# 统计缺失值
+missing_amount = sum(1 for d in data if d['消费金额'] is None)
+missing_freq = sum(1 for d in data if d['消费频次'] is None)
 print("缺失值统计:")
-print(df.isnull().sum())
+print("  消费金额缺失:", missing_amount)
+print("  消费频次缺失:", missing_freq)
 
 # ====== 你的代码开始 ======
 
 # TODO 1: 用中位数填充消费金额和消费频次的缺失值
-# 提示: df['消费金额'].fillna(...)
+# 提示: 
+# 1. 提取所有非空消费金额: amounts = [d['消费金额'] for d in data if d['消费金额'] is not None]
+# 2. 计算中位数: sorted(amounts)[len(amounts)//2]
+# 3. 遍历data，把None替换成中位数
 
 
 # TODO 2: 用3sigma原则找出消费金额的异常值
-# 提示: mean = df['消费金额'].mean(), std = ..., upper = mean + 3*std
+# 提示:
+# 1. 计算均值: sum(amounts) / len(amounts)
+# 2. 计算标准差: math.sqrt(sum((x-mean)**2 for x in amounts) / len(amounts))
+# 3. 找出超出 mean +/- 3*std 的数据
 
 
-# TODO 3: 将消费金额分桶 (0-200低, 200-500中, 500+高)
-# 提示: pd.cut(df['消费金额'], bins=[...], labels=[...])
+# TODO 3: 将消费金额分桶
+# 提示:
+# 0-200 -> '低消费'
+# 200-500 -> '中消费'  
+# 500+ -> '高消费'
 
 
 # ====== 你的代码结束 ======
 
 print("预处理完成!")
 `,
-                    solution: `import pandas as pd
-import random
+                    solution: `import random
+import math
 random.seed(42)
 
+# 模拟数据
 data = []
 for i in range(100):
     amount = round(random.uniform(50, 1000), 2) if random.random() > 0.1 else None
@@ -921,33 +936,73 @@ for i in range(100):
         '消费频次': freq
     })
 
-df = pd.DataFrame(data)
 print("原始数据:")
-print(df.head(10))
-print("缺失值统计:")
-print(df.isnull().sum())
+for row in data[:5]:
+    print(row)
 
-# 答案代码
+# 统计缺失值
+missing_amount = sum(1 for d in data if d['消费金额'] is None)
+missing_freq = sum(1 for d in data if d['消费频次'] is None)
+print("缺失值统计:")
+print("  消费金额缺失:", missing_amount)
+print("  消费频次缺失:", missing_freq)
+
+# ====== 答案代码 ======
+
 # 1. 用中位数填充缺失值
-df['消费金额'] = df['消费金额'].fillna(df['消费金额'].median())
-df['消费频次'] = df['消费频次'].fillna(df['消费频次'].median())
+# 计算消费金额中位数
+amounts = [d['消费金额'] for d in data if d['消费金额'] is not None]
+amounts_sorted = sorted(amounts)
+median_amount = amounts_sorted[len(amounts_sorted) // 2]
+
+# 计算消费频次中位数
+freqs = [d['消费频次'] for d in data if d['消费频次'] is not None]
+freqs_sorted = sorted(freqs)
+median_freq = freqs_sorted[len(freqs_sorted) // 2]
+
+# 填充缺失值
+for d in data:
+    if d['消费金额'] is None:
+        d['消费金额'] = median_amount
+    if d['消费频次'] is None:
+        d['消费频次'] = median_freq
+
+print("填充后数据:")
+for row in data[:5]:
+    print(row)
 
 # 2. 3sigma原则找异常值
-mean = df['消费金额'].mean()
-std = df['消费金额'].std()
+mean = sum(amounts) / len(amounts)
+variance = sum((x - mean) ** 2 for x in amounts) / len(amounts)
+std = math.sqrt(variance)
+
 upper = mean + 3 * std
 lower = mean - 3 * std
-outliers = df[(df['消费金额'] > upper) | (df['消费金额'] < lower)]
+
+print("均值: %.2f" % mean)
+print("标准差: %.2f" % std)
+print("正常范围: [%.2f, %.2f]" % (lower, upper))
+
+outliers = [d for d in data if d['消费金额'] > upper or d['消费金额'] < lower]
 print("异常值数量:", len(outliers))
+if outliers:
+    print("异常值示例:")
+    for o in outliers[:3]:
+        print("  ", o)
 
 # 3. 分桶
-df['消费等级'] = pd.cut(
-    df['消费金额'],
-    bins=[0, 200, 500, float('inf')],
-    labels=['低消费', '中消费', '高消费']
-)
+buckets = {'低消费': 0, '中消费': 0, '高消费': 0}
+for d in data:
+    if d['消费金额'] <= 200:
+        buckets['低消费'] += 1
+    elif d['消费金额'] <= 500:
+        buckets['中消费'] += 1
+    else:
+        buckets['高消费'] += 1
+
 print("消费等级分布:")
-print(df['消费等级'].value_counts())
+for level, count in buckets.items():
+    print("  %s: %d人" % (level, count))
 
 print("预处理完成!")
 `
@@ -1064,13 +1119,12 @@ for i in range(len(corr_pearson.columns)):
                     ]
                 },
                 practice: {
-                    tasks: ["读取销售数据", "计算各字段的描述统计", "计算广告费与销量的相关系数", "找出与销量相关性最强的3个指标"],
-                    template: `import pandas as pd
-import random
+                    tasks: ["用纯Python模拟数据", "计算各字段的描述统计", "计算广告费与销量的相关系数", "找出与销量相关性最强的3个指标"],
+                    template: `import random
 import math
 random.seed(42)
 
-# 模拟销售数据
+# 模拟销售数据（用Python列表代替pandas）
 data = []
 for i in range(100):
     ad = round(random.uniform(100, 1000), 2)
@@ -1085,31 +1139,36 @@ for i in range(100):
         '销量': max(sales, 0)
     })
 
-df = pd.DataFrame(data)
 print("销售数据:")
-print(df.head())
+for row in data[:5]:
+    print(row)
 
 # ====== 你的代码开始 ======
 
 # TODO 1: 计算描述统计（均值、标准差等）
-# 提示: df.describe()
+# 提示: 
+# 1. 提取各列数据: ads = [d['广告费'] for d in data]
+# 2. 计算均值: sum(ads) / len(ads)
+# 3. 计算标准差: math.sqrt(sum((x-mean)**2 for x in ads) / len(ads))
 
 
-# TODO 2: 计算相关系数矩阵
-# 提示: df.corr()
+# TODO 2: 计算相关系数（广告费 vs 销量）
+# 提示:
+# 皮尔逊相关系数公式: 
+# r = sum((xi-x_mean)*(yi-y_mean)) / sqrt(sum((xi-x_mean)^2) * sum((yi-y_mean)^2))
 
 
 # TODO 3: 找出与销量相关性最强的指标
-# 提示: corr['销量'].abs().sort_values()
+# 提示: 分别计算广告费、活动次数、客单价与销量的相关系数，比较绝对值大小
 
 
 # ====== 你的代码结束 ======
 `,
-                    solution: `import pandas as pd
-import random
+                    solution: `import random
 import math
 random.seed(42)
 
+# 模拟销售数据
 data = []
 for i in range(100):
     ad = round(random.uniform(100, 1000), 2)
@@ -1123,14 +1182,71 @@ for i in range(100):
         '销量': max(sales, 0)
     })
 
-df = pd.DataFrame(data)
 print("销售数据:")
-print(df.head())
+for row in data[:5]:
+    print(row)
 
-# 答案代码
+# ====== 答案代码 ======
+
 # 1. 描述统计
-print("描述统计:")
-print(df.describe().round(2))
+def describe(data_list, name):
+    n = len(data_list)
+    mean = sum(data_list) / n
+    variance = sum((x - mean) ** 2 for x in data_list) / n
+    std = math.sqrt(variance)
+    sorted_data = sorted(data_list)
+    min_val = sorted_data[0]
+    max_val = sorted_data[-1]
+    median = sorted_data[n // 2]
+    
+    print("%s:" % name)
+    print("  计数: %d" % n)
+    print("  均值: %.2f" % mean)
+    print("  标准差: %.2f" % std)
+    print("  最小值: %.2f" % min_val)
+    print("  中位数: %.2f" % median)
+    print("  最大值: %.2f" % max_val)
+
+# 提取各列
+ads = [d['广告费'] for d in data]
+freqs = [d['活动次数'] for d in data]
+prices = [d['客单价'] for d in data]
+sales = [d['销量'] for d in data]
+
+describe(ads, '广告费')
+describe(freqs, '活动次数')
+describe(prices, '客单价')
+describe(sales, '销量')
+
+# 2. 计算皮尔逊相关系数
+def pearson_corr(x, y):
+    n = len(x)
+    mean_x = sum(x) / n
+    mean_y = sum(y) / n
+    
+    numerator = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
+    denominator = math.sqrt(sum((xi - mean_x) ** 2 for xi in x) * sum((yi - mean_y) ** 2 for yi in y))
+    
+    if denominator == 0:
+        return 0
+    return numerator / denominator
+
+# 3. 计算各指标与销量的相关性
+corr_ad = pearson_corr(ads, sales)
+corr_freq = pearson_corr(freqs, sales)
+corr_price = pearson_corr(prices, sales)
+
+print("与销量的相关性:")
+print("  广告费: %.3f" % corr_ad)
+print("  活动次数: %.3f" % corr_freq)
+print("  客单价: %.3f" % corr_price)
+
+# 找出最强的
+corrs = [('广告费', corr_ad), ('活动次数', corr_freq), ('客单价', corr_price)]
+corrs.sort(key=lambda x: abs(x[1]), reverse=True)
+print("相关性最强的是: %s (r=%.3f)" % (corrs[0][0], corrs[0][1]))
+
+print("分析完成!")
 
 # 2. 相关系数
 corr = df.corr()
