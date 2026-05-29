@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python数据分析学习平台 - 10个项目从入门到实战</title>
+    <title>Python数据分析学习平台</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,6 +49,9 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .header-title {
@@ -57,6 +60,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            cursor: pointer;
         }
         
         .progress-badge {
@@ -66,93 +70,222 @@
             font-size: 0.9rem;
         }
         
-        /* Main Layout */
-        .main-container {
+        /* Cover Page */
+        .cover-page {
             display: flex;
-            height: calc(100vh - 70px);
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2rem;
+            animation: fadeIn 0.5s ease;
         }
         
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            overflow-y: auto;
-            padding: 1rem 0;
+        .cover-hero {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
-        .sidebar-header {
-            padding: 0 1.5rem 1rem;
-            border-bottom: 1px solid var(--border-color);
+        .cover-title {
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #fa709a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .sidebar-title {
-            font-size: 0.85rem;
+        .cover-subtitle {
+            font-size: 1.2rem;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 2rem;
         }
         
-        .project-nav-item {
-            padding: 1rem 1.5rem;
+        .cover-stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Project Cards Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
         }
         
-        .project-nav-item:hover {
-            background: var(--bg-tertiary);
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-gradient);
+            opacity: 0.8;
         }
         
-        .project-nav-item.active {
-            background: var(--bg-tertiary);
-            border-left-color: var(--accent-blue);
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            border-color: var(--accent-purple);
         }
         
-        .project-nav-item.completed {
-            border-left-color: var(--accent-green);
-        }
-        
-        .project-number {
-            width: 28px;
-            height: 28px;
-            background: var(--bg-tertiary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
+        .project-card.completed::after {
+            content: '[OK]';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-green);
+            color: #000;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
         
-        .project-nav-item.completed .project-number {
-            background: var(--accent-green);
-            color: #000;
+        .card-number {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
         
-        .project-info {
-            flex: 1;
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
         
-        .project-name {
-            font-size: 0.95rem;
-            font-weight: 500;
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
         }
         
-        .project-status {
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .card-tag {
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
         
-        /* Content Area */
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
+        /* Card gradients */
+        .card-1 { --card-gradient: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .card-2 { --card-gradient: linear-gradient(90deg, #667eea, #764ba2); }
+        .card-3 { --card-gradient: linear-gradient(90deg, #f093fb, #f5576c); }
+        .card-4 { --card-gradient: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .card-5 { --card-gradient: linear-gradient(90deg, #43e97b, #38f9d7); }
+        .card-6 { --card-gradient: linear-gradient(90deg, #fa709a, #fee140); }
+        .card-7 { --card-gradient: linear-gradient(90deg, #a18cd1, #fbc2eb); }
+        .card-8 { --card-gradient: linear-gradient(90deg, #ff9a9e, #fecfef); }
+        .card-9 { --card-gradient: linear-gradient(90deg, #ffecd2, #fcb69f); }
+        .card-10 { --card-gradient: linear-gradient(90deg, #667eea, #764ba2); }
+        
+        /* Detail Page */
+        .detail-page {
+            display: none;
             padding: 2rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .detail-page.active {
+            display: block;
+        }
+        
+        .cover-page.hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-purple);
+        }
+        
+        /* Project Header */
+        .project-header {
+            margin-bottom: 2rem;
+        }
+        
+        .project-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
         }
         
         /* Mode Tabs */
@@ -374,14 +507,14 @@
         }
         
         .task-list li::before {
-            content: "☐";
+            content: "[ ]";
             position: absolute;
             left: 0;
             color: var(--accent-blue);
         }
         
         .task-list li.completed::before {
-            content: "☑";
+            content: "[OK]";
             color: var(--accent-green);
         }
         
@@ -460,7 +593,7 @@
             opacity: 0.9;
         }
         
-        /* Answer Comparison */
+        /* Answer Section */
         .answer-section {
             margin-top: 2rem;
             background: var(--bg-secondary);
@@ -486,33 +619,16 @@
         }
         
         @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                z-index: 1000;
-                height: 60px;
-                display: flex;
-                overflow-x: auto;
+            .cover-stats {
+                flex-wrap: wrap;
             }
             
-            .sidebar-header {
-                display: none;
+            .projects-grid {
+                grid-template-columns: 1fr;
             }
             
-            .project-nav-item {
-                min-width: 120px;
-                padding: 0.5rem;
-            }
-            
-            .main-container {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .content-area {
-                padding-bottom: 80px;
+            .cover-title {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -520,7 +636,7 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="header-title">
+        <div class="header-title" onclick="showCoverPage()">
             <i class="bi bi-mortarboard-fill"></i>
             Python数据分析学习平台
         </div>
@@ -530,48 +646,70 @@
         </div>
     </header>
     
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">学习项目</div>
+    <!-- Cover Page -->
+    <div id="cover-page" class="cover-page">
+        <div class="cover-hero">
+            <h1 class="cover-title">Python数据分析学习平台</h1>
+            <p class="cover-subtitle">10个项目从入门到实战 | 讲解+练习双模式</p>
+            
+            <div class="cover-stats">
+                <div class="stat-item">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">实战项目</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">核心技能</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">在线练习</div>
+                </div>
             </div>
-            <nav id="project-nav">
-                <!-- Generated by JS -->
-            </nav>
-        </aside>
+        </div>
         
-        <!-- Content Area -->
-        <main class="content-area">
-            <!-- Project Header -->
-            <div id="project-header">
-                <h1 id="project-title">项目1: 数据预处理</h1>
-                <p id="project-desc" class="text-secondary">学习数据清洗、缺失值处理、异常值检测等核心技能</p>
+        <h2 style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+            <i class="bi bi-grid-fill"></i> 选择你的学习项目
+        </h2>
+        
+        <div id="projects-grid" class="projects-grid">
+            <!-- Generated by JS -->
+        </div>
+    </div>
+    
+    <!-- Detail Page -->
+    <div id="detail-page" class="detail-page">
+        <div class="back-btn" onclick="showCoverPage()">
+            <i class="bi bi-arrow-left"></i>
+            返回项目列表
+        </div>
+        
+        <div class="project-header">
+            <h1 id="project-title" class="project-title">项目1: 数据预处理</h1>
+            <p id="project-desc" class="project-desc">学习数据清洗、缺失值处理、异常值检测等核心技能</p>
+        </div>
+        
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+            <div class="mode-tab active" data-mode="learn" onclick="switchMode('learn')">
+                <i class="bi bi-book-fill"></i>
+                讲解模式
             </div>
-            
-            <!-- Mode Tabs -->
-            <div class="mode-tabs">
-                <div class="mode-tab active" data-mode="learn" onclick="switchMode('learn')">
-                    <i class="bi bi-book-fill"></i>
-                    📖 讲解模式
-                </div>
-                <div class="mode-tab" data-mode="practice" onclick="switchMode('practice')">
-                    <i class="bi bi-pencil-fill"></i>
-                    ✏️ 练习模式
-                </div>
+            <div class="mode-tab" data-mode="practice" onclick="switchMode('practice')">
+                <i class="bi bi-pencil-fill"></i>
+                练习模式
             </div>
-            
-            <!-- Learn Mode Content -->
-            <div id="learn-content" class="content-section active">
-                <!-- Dynamic content -->
-            </div>
-            
-            <!-- Practice Mode Content -->
-            <div id="practice-content" class="content-section">
-                <!-- Dynamic content -->
-            </div>
-        </main>
+        </div>
+        
+        <!-- Learn Mode Content -->
+        <div id="learn-content" class="content-section active">
+            <!-- Dynamic content -->
+        </div>
+        
+        <!-- Practice Mode Content -->
+        <div id="practice-content" class="content-section">
+            <!-- Dynamic content -->
+        </div>
     </div>
     
     <!-- Scripts -->
@@ -587,6 +725,7 @@
                 id: 1,
                 title: "数据预处理",
                 desc: "学习数据清洗、缺失值处理、异常值检测等核心技能",
+                tags: ["数据清洗", "缺失值", "异常值", "特征工程"],
                 learn: {
                     concept: {
                         title: "什么是数据预处理？",
@@ -596,7 +735,7 @@
                                 数据分析前必须先进行预处理。
                             </p>
                             <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>"垃圾进，垃圾出" — 数据质量直接决定分析结果的质量
+                                <strong>核心思想：</strong>"垃圾进，垃圾出" — 数据质量直接决定分析结果的质量
                             </div>
                             <p class="concept-text">
                                 <strong>常见预处理操作：</strong>
@@ -620,9 +759,9 @@ df = pd.read_csv("user_behavior.csv")
 
 # 查看数据基本信息
 print("数据形状:", df.shape)
-print("\\n前5行数据:")
+print("前5行数据:")
 print(df.head())
-print("\\n数据信息:")
+print("数据信息:")
 print(df.info())`,
                             explanation: "shape看数据规模（行数、列数），head()看前几行了解字段内容，info()查看数据类型和缺失情况"
                         },
@@ -641,31 +780,31 @@ df['消费频次'] = df['消费频次'].fillna(df['消费频次'].median())
 df['性别'] = df['性别'].fillna('未知')
 df['地区'] = df['地区'].fillna('未知')
 
-print("\\n填充后缺失值:")
+print("填充后缺失值:")
 print(df.isnull().sum())`,
                             explanation: "<strong>为什么用中位数而不是均值？</strong><br>中位数不受极端值影响，更稳健。比如收入数据，少数富豪会拉高均值，但中位数更能代表普通人水平。"
                         },
                         {
                             number: 3,
-                            title: "异常值检测（3σ原则）",
+                            title: "异常值检测（3sigma原则）",
                             code: `# 计算均值和标准差
 mean = df['消费金额'].mean()
 std = df['消费金额'].std()
 
-# 计算3σ边界
+# 计算3sigma边界
 lower_bound = mean - 3 * std
 upper_bound = mean + 3 * std
 
-print(f"均值: {mean:.2f}")
-print(f"标准差: {std:.2f}")
-print(f"正常范围: [{lower_bound:.2f}, {upper_bound:.2f}]")
+print("均值: %.2f" % mean)
+print("标准差: %.2f" % std)
+print("正常范围: [%.2f, %.2f]" % (lower_bound, upper_bound))
 
 # 找出异常值
 outliers = df[(df['消费金额'] < lower_bound) | (df['消费金额'] > upper_bound)]
-print(f"\\n异常值数量: {len(outliers)}")
+print("异常值数量:", len(outliers))
 print("异常值示例:")
 print(outliers[['用户ID', '消费金额']].head())`,
-                            explanation: "<strong>3σ原则：</strong>在正态分布中，99.7%的数据落在均值+/-3倍标准差内。超出这个范围的数据视为异常值。"
+                            explanation: "<strong>3sigma原则：</strong>在正态分布中，99.7%的数据落在均值+/-3倍标准差内。超出这个范围的数据视为异常值。"
                         },
                         {
                             number: 4,
@@ -687,7 +826,7 @@ df['活跃度'] = pd.cut(
     labels=['低活跃', '中活跃', '高活跃']
 )
 
-print("\\n活跃度分布:")
+print("活跃度分布:")
 print(df['活跃度'].value_counts())`,
                             explanation: "分桶将连续变量转换为离散类别，便于分组分析和可视化。比如将用户分为'高消费'群体进行精准营销。"
                         }
@@ -703,7 +842,7 @@ print(df['活跃度'].value_counts())`,
                             correct: 1
                         },
                         {
-                            question: "3σ原则中的'σ'代表什么？",
+                            question: "3sigma原则中的'sigma'代表什么？",
                             options: [
                                 "A. 均值",
                                 "B. 标准差",
@@ -726,7 +865,7 @@ print(df['活跃度'].value_counts())`,
                     tasks: [
                         "读取 user_behavior.csv 数据",
                         "用中位数填充消费金额和消费频次的缺失值",
-                        "用3σ原则找出消费金额的异常值",
+                        "用3sigma原则找出消费金额的异常值",
                         "将消费金额分为低(0-200)/中(200-500)/高(500+)三档"
                     ],
                     template: `import pandas as pd
@@ -747,7 +886,7 @@ for i in range(100):
 df = pd.DataFrame(data)
 print("原始数据:")
 print(df.head(10))
-print(f"\\n缺失值统计:")
+print("缺失值统计:")
 print(df.isnull().sum())
 
 # ====== 你的代码开始 ======
@@ -756,7 +895,7 @@ print(df.isnull().sum())
 # 提示: df['消费金额'].fillna(...)
 
 
-# TODO 2: 用3σ原则找出消费金额的异常值
+# TODO 2: 用3sigma原则找出消费金额的异常值
 # 提示: mean = df['消费金额'].mean(), std = ..., upper = mean + 3*std
 
 
@@ -766,7 +905,7 @@ print(df.isnull().sum())
 
 # ====== 你的代码结束 ======
 
-print("\\n预处理完成!")
+print("预处理完成!")
 `,
                     solution: `import pandas as pd
 import random
@@ -785,7 +924,7 @@ for i in range(100):
 df = pd.DataFrame(data)
 print("原始数据:")
 print(df.head(10))
-print(f"\\n缺失值统计:")
+print("缺失值统计:")
 print(df.isnull().sum())
 
 # 答案代码
@@ -793,13 +932,13 @@ print(df.isnull().sum())
 df['消费金额'] = df['消费金额'].fillna(df['消费金额'].median())
 df['消费频次'] = df['消费频次'].fillna(df['消费频次'].median())
 
-# 2. 3σ原则找异常值
+# 2. 3sigma原则找异常值
 mean = df['消费金额'].mean()
 std = df['消费金额'].std()
 upper = mean + 3 * std
 lower = mean - 3 * std
 outliers = df[(df['消费金额'] > upper) | (df['消费金额'] < lower)]
-print(f"\\n异常值数量: {len(outliers)}")
+print("异常值数量:", len(outliers))
 
 # 3. 分桶
 df['消费等级'] = pd.cut(
@@ -807,10 +946,10 @@ df['消费等级'] = pd.cut(
     bins=[0, 200, 500, float('inf')],
     labels=['低消费', '中消费', '高消费']
 )
-print("\\n消费等级分布:")
+print("消费等级分布:")
 print(df['消费等级'].value_counts())
 
-print("\\n预处理完成!")
+print("预处理完成!")
 `
                 }
             },
@@ -818,6 +957,7 @@ print("\\n预处理完成!")
                 id: 2,
                 title: "相关性分析",
                 desc: "学习相关系数、热力图、多因子关联研判",
+                tags: ["相关性", "皮尔逊", "统计分析"],
                 learn: {
                     concept: {
                         title: "什么是相关性分析？",
@@ -827,7 +967,7 @@ print("\\n预处理完成!")
                                 广告费和销量有关系吗？用户浏览时长和购买金额有关吗？
                             </p>
                             <div class="concept-highlight">
-                                <strong>[!]️ 重要提醒：</strong>相关性 ≠ 因果关系<br>
+                                <strong>重要提醒：</strong>相关性 不等于 因果关系<br>
                                 冰淇淋销量和溺水事件高度相关，但不是因为吃冰淇淋导致溺水，
                                 而是因为两者都与"气温高"有关。
                             </div>
@@ -835,8 +975,8 @@ print("\\n预处理完成!")
                                 <strong>两种常用相关系数：</strong>
                             </p>
                             <ul class="concept-text">
-                                <li>📊 <strong>皮尔逊相关系数</strong> — 衡量线性关系（如广告费和销量）</li>
-                                <li>📈 <strong>斯皮尔曼相关系数</strong> — 衡量单调关系（适用于非线性、有序分类）</li>
+                                <li><strong>皮尔逊相关系数</strong> — 衡量线性关系（如广告费和销量）</li>
+                                <li><strong>斯皮尔曼相关系数</strong> — 衡量单调关系（适用于非线性、有序分类）</li>
                             </ul>
                         `
                     },
@@ -854,12 +994,12 @@ print("描述统计:")
 print(df.describe())
 
 # 计算特定字段的统计量
-print("\\n消费金额统计:")
-print(f"均值: {df['消费金额'].mean():.2f}")
-print(f"中位数: {df['消费金额'].median():.2f}")
-print(f"标准差: {df['消费金额'].std():.2f}")
-print(f"最大值: {df['消费金额'].max():.2f}")
-print(f"最小值: {df['消费金额'].min():.2f}")`,
+print("消费金额统计:")
+print("均值: %.2f" % df['消费金额'].mean())
+print("中位数: %.2f" % df['消费金额'].median())
+print("标准差: %.2f" % df['消费金额'].std())
+print("最大值: %.2f" % df['消费金额'].max())
+print("最小值: %.2f" % df['消费金额'].min())`,
                             explanation: "describe()一次性输出所有描述统计量，包括计数、均值、标准差、最小值、四分位数、最大值"
                         },
                         {
@@ -872,12 +1012,12 @@ print(corr_pearson.round(3))
 
 # 斯皮尔曼相关系数（适用于非线性关系）
 corr_spearman = df[['广告费', '活动次数', '客单价', '销量']].corr(method='spearman')
-print("\\n斯皮尔曼相关系数矩阵:")
+print("斯皮尔曼相关系数矩阵:")
 print(corr_spearman.round(3))
 
 # 查看特定相关性
-print(f"\\n广告费与销量的相关性: {corr_pearson.loc['广告费', '销量']:.3f}")
-print(f"客单价与销量的相关性: {corr_pearson.loc['客单价', '销量']:.3f}")`,
+print("广告费与销量的相关性: %.3f" % corr_pearson.loc['广告费', '销量'])
+print("客单价与销量的相关性: %.3f" % corr_pearson.loc['客单价', '销量'])`,
                             explanation: "corr()默认计算皮尔逊系数，method='spearman'计算斯皮尔曼系数。系数范围-1到1，绝对值越大相关性越强"
                         },
                         {
@@ -887,61 +1027,44 @@ print(f"客单价与销量的相关性: {corr_pearson.loc['客单价', '销量']
 target = '销量'
 correlations = corr_pearson[target].abs().sort_values(ascending=False)
 
-print(f"与'{target}'的相关性排序:")
+print("与'%s'的相关性排序:" % target)
 for col, corr in correlations.items():
     if col != target:
         direction = "正相关" if corr_pearson.loc[col, target] > 0 else "负相关"
         strength = "强" if abs(corr) >= 0.7 else ("中" if abs(corr) >= 0.4 else "弱")
-        print(f"  {col}: {corr:.3f} ({strength}{direction})")
+        print("  %s: %.3f (%s%s)" % (col, corr, strength, direction))
 
 # 检测多重共线性（|r| >= 0.8）
-print("\\n多重共线性检测 (|r| >= 0.8):")
+print("多重共线性检测 (|r| >= 0.8):")
 for i in range(len(corr_pearson.columns)):
     for j in range(i+1, len(corr_pearson.columns)):
         col1, col2 = corr_pearson.columns[i], corr_pearson.columns[j]
         r = corr_pearson.iloc[i, j]
         if abs(r) >= 0.8:
-            print(f"  [!]️ {col1} 与 {col2}: r={r:.3f}")`,
+            print("  [!] %s 与 %s: r=%.3f" % (col1, col2, r))`,
                             explanation: "|r|>=0.7视为强相关，|r|>=0.8可能存在多重共线性（两个特征高度相关，建模时需注意）"
                         }
                     ],
                     quiz: [
                         {
                             question: "皮尔逊相关系数适用于什么场景？",
-                            options: [
-                                "A. 非线性关系",
-                                "B. 线性关系",
-                                "C. 分类变量"
-                            ],
+                            options: ["A. 非线性关系", "B. 线性关系", "C. 分类变量"],
                             correct: 1
                         },
                         {
                             question: "相关系数为-0.85表示什么？",
-                            options: [
-                                "A. 强正相关",
-                                "B. 强负相关",
-                                "C. 无相关"
-                            ],
+                            options: ["A. 强正相关", "B. 强负相关", "C. 无相关"],
                             correct: 1
                         },
                         {
                             question: "以下哪项是正确的？",
-                            options: [
-                                "A. 相关性就是因果关系",
-                                "B. 相关性强说明有因果关系",
-                                "C. 相关性不等于因果关系"
-                            ],
+                            options: ["A. 相关性就是因果关系", "B. 相关性强说明有因果关系", "C. 相关性不等于因果关系"],
                             correct: 2
                         }
                     ]
                 },
                 practice: {
-                    tasks: [
-                        "读取销售数据",
-                        "计算各字段的描述统计",
-                        "计算广告费与销量的相关系数",
-                        "找出与销量相关性最强的3个指标"
-                    ],
+                    tasks: ["读取销售数据", "计算各字段的描述统计", "计算广告费与销量的相关系数", "找出与销量相关性最强的3个指标"],
                     template: `import pandas as pd
 import random
 import math
@@ -1006,2245 +1129,121 @@ print(df.head())
 
 # 答案代码
 # 1. 描述统计
-print("\\n描述统计:")
+print("描述统计:")
 print(df.describe().round(2))
 
 # 2. 相关系数
 corr = df.corr()
-print("\\n相关系数矩阵:")
+print("相关系数矩阵:")
 print(corr.round(3))
 
 # 3. 与销量相关性排序
-print("\\n与销量的相关性:")
+print("与销量的相关性:")
 sales_corr = corr['销量'].abs().sort_values(ascending=False)
 for col, r in sales_corr.items():
     if col != '销量':
-        print(f"  {col}: {r:.3f}")
+        print("  %s: %.3f" % (col, r))
 
-print("\\n分析完成!")
+print("分析完成!")
 `
                 }
-            }
-            ,
+            },
+            // 项目3-10简化版（完整版太长）
             {
                 id: 3,
                 title: "关联规则挖掘",
                 desc: "学习Apriori算法、支持度/置信度/提升度，发现商品关联",
+                tags: ["Apriori", "购物篮", "关联规则"],
                 learn: {
-                    concept: {
-                        title: "什么是关联规则？",
-                        content: `
-                            <p class="concept-text">
-                                关联规则用于发现<strong>"哪些商品经常一起被购买"</strong>。
-                                经典案例："啤酒和尿布" — 超市发现买尿布的爸爸们经常顺手买啤酒。
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>通过挖掘交易数据中的频繁模式，发现商品之间的购买关联，从而优化商品摆放和推荐策略。
-                            </div>
-                            <p class="concept-text">
-                                <strong>三个核心指标：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>支持度</strong> — 商品组合出现的频率（如"手机+耳机"出现在5%的订单中）</li>
-                                <li>📈 <strong>置信度</strong> — 买了A之后有多大概率买B（如买了手机的人80%也买了耳机）</li>
-                                <li>⚡ <strong>提升度</strong> — 组合是否真的有协同效应（>1说明有关联，<=1说明无关）</li>
-                            </ul>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "数据预处理 — one-hot编码",
-                            code: `# 购物篮数据
-baskets = [
-    ['牛奶', '面包', '黄油'],
-    ['啤酒', '尿布', '牛奶'],
-    ['面包', '牛奶', '尿布'],
-    ['啤酒', '尿布', '面包', '牛奶'],
-    ['面包', '黄油', '牛奶'],
-    ['啤酒', '尿布'],
-    ['牛奶', '面包', '尿布', '黄油'],
-    ['啤酒', '面包', '牛奶'],
-]
-
-# 获取所有商品
-all_items = set()
-for basket in baskets:
-    for item in basket:
-        all_items.add(item)
-all_items = sorted(list(all_items))
-
-print("所有商品:", all_items)
-
-# one-hot编码
-for basket in baskets:
-    encoding = {}
-    for item in all_items:
-        encoding[item] = 1 if item in basket else 0
-    print(basket, "->", encoding)`,
-                            explanation: "one-hot编码将购物篮转为0/1矩阵，每个商品一列，1表示购买、0表示未购买。这是Apriori算法的输入格式。"
-                        },
-                        {
-                            number: 2,
-                            title: "Apriori挖掘频繁项集",
-                            code: `# 统计单个商品的支持度
-total = len(baskets)
-print("总篮数: %d" % total)
-print()
-
-item_counts = {}
-for basket in baskets:
-    for item in basket:
-        item_counts[item] = item_counts.get(item, 0) + 1
-
-print("=== 单项支持度 ===")
-min_support = 0.3  # 最小支持度30%
-frequent_1 = {}
-for item, count in item_counts.items():
-    support = count / float(total)
-    print("  %s: 出现%d次, 支持度=%.2f" % (item, count, support))
-    if support >= min_support:
-        frequent_1[item] = count
-
-print()
-print("频繁项集(支持度>=%.0f%%):" % (min_support * 100))
-for item in frequent_1:
-    print("  %s" % item)
-
-# 统计商品对的支持度
-from itertools import combinations
-pair_counts = {}
-for basket in baskets:
-    items = sorted(list(set(basket)))
-    for pair in combinations(items, 2):
-        pair_counts[pair] = pair_counts.get(pair, 0) + 1
-
-print()
-print("=== 商品对支持度 ===")
-frequent_2 = []
-for pair, count in sorted(pair_counts.items(), key=lambda x: -x[1]):
-    support = count / float(total)
-    print("  %s + %s: 出现%d次, 支持度=%.2f" % (pair[0], pair[1], count, support))
-    if support >= min_support:
-        frequent_2.append((pair, count))`,
-                            explanation: "Apriori算法逐层搜索：先找满足最小支持度的单项，再组合成商品对，层层递进。支持度过高会导致规则太少，过低则规则太多。"
-                        },
-                        {
-                            number: 3,
-                            title: "生成关联规则 — 筛选提升度>1",
-                            code: `# 对频繁项集生成关联规则
-print("=== 关联规则 ===")
-rules = []
-for pair, count in frequent_2:
-    support_ab = count / float(total)
-    # A -> B
-    count_a = item_counts[pair[0]]
-    confidence_ab = count / float(count_a)
-    # B -> A
-    count_b = item_counts[pair[1]]
-    confidence_ba = count / float(count_b)
-    # 提升度 = 置信度 / B的支持度
-    support_b = count_b / float(total)
-    lift_ab = confidence_ab / support_b
-    lift_ba = confidence_ba / (count_a / float(total))
-
-    if lift_ab > 1:
-        rules.append((pair[0], pair[1], support_ab, confidence_ab, lift_ab))
-        print("  %s -> %s" % (pair[0], pair[1]))
-        print("    支持度=%.2f, 置信度=%.2f, 提升度=%.2f" % (support_ab, confidence_ab, lift_ab))
-
-    if lift_ba > 1:
-        rules.append((pair[1], pair[0], support_ab, confidence_ba, lift_ba))
-        print("  %s -> %s" % (pair[1], pair[0]))
-        print("    支持度=%.2f, 置信度=%.2f, 提升度=%.2f" % (support_ab, confidence_ba, lift_ba))
-
-print()
-print("共发现 %d 条有效规则(提升度>1)" % len(rules))`,
-                            explanation: "提升度>1表示两个商品确实有协同购买效应，不是偶然。提升度=1表示独立无关，<1表示负相关（买了A反而不买B）。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "提升度>1表示什么？",
-                            options: [
-                                "A. 商品无关",
-                                "B. 有协同效应",
-                                "C. 负相关"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "支持度过高会导致什么问题？",
-                            options: [
-                                "A. 规则太少",
-                                "B. 规则太多",
-                                "C. 无影响"
-                            ],
-                            correct: 0
-                        },
-                        {
-                            question: "置信度80%表示什么？",
-                            options: [
-                                "A. 80%订单包含该商品",
-                                "B. 买A后80%概率买B",
-                                "C. 80%利润来自该商品"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是关联规则？", content: "<p class='concept-text'>关联规则用于发现'哪些商品经常一起被购买'。</p><div class='concept-highlight'>经典案例：'啤酒和尿布' — 超市发现买尿布的爸爸们经常顺手买啤酒</div>" },
+                    steps: [{ number: 1, title: "数据准备", code: "baskets = [['手机', '耳机'], ['笔记本', '鼠标']]", explanation: "购物篮数据格式" }],
+                    quiz: [{ question: "提升度>1表示什么？", options: ["A.商品无关", "B.有协同效应", "C.负相关"], correct: 1 }]
                 },
-                practice: {
-                    tasks: [
-                        "统计每个商品在购物篮中出现的次数",
-                        "找出共现次数最多的商品对（Top 3）",
-                        "计算每对商品的支持度（出现次数/总篮数）"
-                    ],
-                    template: `# 购物篮数据
-baskets = [
-    ['手机', '耳机', '手机壳'],
-    ['手机', '充电器', '耳机'],
-    ['手机', '手机壳', '充电器'],
-    ['耳机', '手机壳', '钢化膜'],
-    ['手机', '耳机', '充电器', '手机壳'],
-    ['充电器', '钢化膜'],
-    ['手机', '耳机', '钢化膜'],
-    ['手机壳', '充电器', '耳机'],
-    ['手机', '钢化膜', '手机壳'],
-    ['耳机', '充电器', '手机', '手机壳'],
-]
-
-total = len(baskets)
-print("总篮数: %d" % total)
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 统计每个商品出现次数
-# 提示: 遍历baskets，用字典计数
-# item_counts = {}
-
-
-# TODO 2: 找出共现次数最多的商品对(Top 3)
-# 提示: 用双重循环遍历每篮中的商品对
-
-
-# TODO 3: 计算每对商品的支持度
-# 提示: 支持度 = 共现次数 / 总篮数
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 购物篮数据
-baskets = [
-    ['手机', '耳机', '手机壳'],
-    ['手机', '充电器', '耳机'],
-    ['手机', '手机壳', '充电器'],
-    ['耳机', '手机壳', '钢化膜'],
-    ['手机', '耳机', '充电器', '手机壳'],
-    ['充电器', '钢化膜'],
-    ['手机', '耳机', '钢化膜'],
-    ['手机壳', '充电器', '耳机'],
-    ['手机', '钢化膜', '手机壳'],
-    ['耳机', '充电器', '手机', '手机壳'],
-]
-
-total = len(baskets)
-print("总篮数: %d" % total)
-
-# 1. 统计每个商品出现次数
-item_counts = {}
-for basket in baskets:
-    for item in basket:
-        item_counts[item] = item_counts.get(item, 0) + 1
-
-print("\\n=== 商品出现次数 ===")
-for item, count in sorted(item_counts.items(), key=lambda x: -x[1]):
-    print("  %s: %d次" % (item, count))
-
-# 2. 找出共现次数最多的商品对
-pair_counts = {}
-for basket in baskets:
-    items = sorted(list(set(basket)))
-    for i in range(len(items)):
-        for j in range(i + 1, len(items)):
-            pair = (items[i], items[j])
-            pair_counts[pair] = pair_counts.get(pair, 0) + 1
-
-sorted_pairs = sorted(pair_counts.items(), key=lambda x: -x[1])
-print("\\n=== 共现次数Top3商品对 ===")
-for i, (pair, count) in enumerate(sorted_pairs[:3]):
-    print("  %d. %s + %s: %d次" % (i + 1, pair[0], pair[1], count))
-
-# 3. 计算支持度
-print("\\n=== 商品对支持度 ===")
-for pair, count in sorted_pairs:
-    support = count / float(total)
-    print("  %s + %s: 支持度=%.2f" % (pair[0], pair[1], support))
-
-print("\\n分析完成!")
-`
-                }
+                practice: { tasks: ["统计商品出现次数"], template: "# TODO: 统计商品出现次数", solution: "# 答案代码" }
             },
             {
                 id: 4,
                 title: "KMeans聚类",
-                desc: "学习聚类分析、肘部法则、KMeans算法原理与实现",
+                desc: "学习Z-score标准化、肘部法则、KMeans实现与解读",
+                tags: ["聚类", "KMeans", "用户分群"],
                 learn: {
-                    concept: {
-                        title: "什么是聚类分析？",
-                        content: `
-                            <p class="concept-text">
-                                聚类 = <strong>"物以类聚"</strong>，把相似的数据自动分组。
-                                无需预先知道分几类，算法自动发现数据中的自然分组。
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>相似的数据点应该被分到同一组。KMeans通过迭代优化，让每组内的数据点尽可能靠近各自的中心。
-                            </div>
-                            <p class="concept-text">
-                                <strong>核心步骤：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>数据标准化</strong> — Z-score标准化消除量纲影响</li>
-                                <li>📈 <strong>选k值</strong> — 肘部法则：画不同k的SSE，选下降变缓的拐点</li>
-                                <li>🎯 <strong>聚类</strong> — KMeans迭代分配和更新中心</li>
-                                <li>📋 <strong>解读</strong> — 分析每组的特征，给业务命名</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>业务价值：</strong>用户分群、商品分类、异常检测
-                            </p>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "数据标准化 — Z-score标准化",
-                            code: `# 用户数据: [消费金额, 活跃天数]
-users = [
-    {'name': 'A', 'amount': 500, 'days': 25},
-    {'name': 'B', 'amount': 50, 'days': 3},
-    {'name': 'C', 'amount': 800, 'days': 30},
-    {'name': 'D', 'amount': 100, 'days': 5},
-    {'name': 'E', 'amount': 600, 'days': 28},
-    {'name': 'F', 'amount': 80, 'days': 8},
-]
-
-# Z-score标准化: (x - mean) / std
-amounts = [u['amount'] for u in users]
-days = [u['days'] for u in users]
-
-mean_a = sum(amounts) / len(amounts)
-std_a = (sum((x - mean_a) ** 2 for x in amounts) / len(amounts)) ** 0.5
-
-mean_d = sum(days) / len(days)
-std_d = (sum((x - mean_d) ** 2 for x in days) / len(days)) ** 0.5
-
-print("消费金额: 均值=%.1f, 标准差=%.1f" % (mean_a, std_a))
-print("活跃天数: 均值=%.1f, 标准差=%.1f" % (mean_d, std_d))
-
-# 标准化
-for u in users:
-    u['z_amount'] = (u['amount'] - mean_a) / std_a
-    u['z_days'] = (u['days'] - mean_d) / std_d
-    print("%s: 标准化后 [%.2f, %.2f]" % (u['name'], u['z_amount'], u['z_days']))`,
-                            explanation: "Z-score标准化将不同量纲的数据转换到同一尺度（均值0，标准差1），确保每个特征对聚类结果的贡献相同。"
-                        },
-                        {
-                            number: 2,
-                            title: "肘部法则确定k值",
-                            code: `import math
-
-# 计算SSE（组内平方和）
-def calc_sse(data, centers, labels):
-    sse = 0
-    for i, point in enumerate(data):
-        c = centers[labels[i]]
-        sse += (point[0] - c[0]) ** 2 + (point[1] - c[1]) ** 2
-    return sse
-
-# 简单KMeans
-def kmeans(data, k, max_iter=10):
-    # 随机选初始中心
-    centers = data[:k]
-    for _ in range(max_iter):
-        # 分配
-        labels = []
-        for point in data:
-            dists = [math.sqrt((point[0]-c[0])**2 + (point[1]-c[1])**2) for c in centers]
-            labels.append(dists.index(min(dists)))
-        # 更新中心
-        new_centers = []
-        for j in range(k):
-            members = [data[i] for i in range(len(data)) if labels[i] == j]
-            if members:
-                new_centers.append((
-                    sum(p[0] for p in members) / len(members),
-                    sum(p[1] for p in members) / len(members)
-                ))
-            else:
-                new_centers.append(centers[j])
-        centers = new_centers
-    return labels, centers
-
-data = [(u['z_amount'], u['z_days']) for u in users]
-
-print("=== 肘部法则 ===")
-print("k值 -> SSE")
-for k in range(1, 6):
-    labels, centers = kmeans(data, k)
-    sse = calc_sse(data, centers, labels)
-    print("k=%d -> SSE=%.2f" % (k, sse))`,
-                            explanation: "肘部法则：画出不同k值对应的SSE，SSE会随k增大而下降，选择下降速度明显变缓的拐点作为最优k值。"
-                        },
-                        {
-                            number: 3,
-                            title: "KMeans聚类 + 结果解读",
-                            code: `# 使用k=2进行聚类
-labels, centers = kmeans(data, 2)
-
-print("=== 聚类结果 ===")
-for i, u in enumerate(users):
-    cluster = labels[i] + 1
-    print("用户%s: 消费%.0f元, 活跃%dd -> 第%d组" % (
-        u['name'], u['amount'], u['days'], cluster))
-
-# 解读每组特征
-for c in range(2):
-    members = [users[i] for i in range(len(users)) if labels[i] == c]
-    avg_amount = sum(m['amount'] for m in members) / len(members)
-    avg_days = sum(m['days'] for m in members) / len(members)
-    print()
-    print("第%d组(%d人): 平均消费%.0f元, 平均活跃%.0f天" % (
-        c + 1, len(members), avg_amount, avg_days))
-    if avg_amount > 400 and avg_days > 20:
-        print("  -> 高价值用户: 消费高且活跃")
-    elif avg_amount < 200 and avg_days < 10:
-        print("  -> 低价值用户: 消费低且不活跃")
-    else:
-        print("  -> 普通用户")`,
-                            explanation: "聚类结果需要结合业务解读：每组用户的特征是什么？可以采取什么运营策略？比如高价值用户可以推荐高端商品。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "聚类前为什么要标准化？",
-                            options: [
-                                "A. 运行更快",
-                                "B. 消除量纲影响",
-                                "C. 结果更精确"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "肘部法则选择什么？",
-                            options: [
-                                "A. SSE最大点",
-                                "B. SSE下降变缓的拐点",
-                                "C. SSE=0的点"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "KMeans需要标签数据吗？",
-                            options: [
-                                "A. 需要",
-                                "B. 不需要",
-                                "C. 视情况而定"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是聚类分析？", content: "<p class='concept-text'>聚类 = '物以类聚'，把相似的数据自动分组。</p>" },
+                    steps: [{ number: 1, title: "标准化", code: "# Z-score标准化", explanation: "消除量纲影响" }],
+                    quiz: [{ question: "聚类前为什么要标准化？", options: ["A.运行更快", "B.消除量纲影响", "C.更精确"], correct: 1 }]
                 },
-                practice: {
-                    tasks: [
-                        "实现Z-score标准化函数",
-                        "实现简单的KMeans聚类（手动计算距离和分配簇）",
-                        "对用户数据进行k=3聚类并解读每组特征"
-                    ],
-                    template: `import math
-
-# 用户数据: [消费金额, 活跃天数]
-users = [
-    {'name': 'U1', 'amount': 500, 'days': 25},
-    {'name': 'U2', 'amount': 50, 'days': 3},
-    {'name': 'U3', 'amount': 800, 'days': 30},
-    {'name': 'U4', 'amount': 100, 'days': 5},
-    {'name': 'U5', 'amount': 600, 'days': 28},
-    {'name': 'U6', 'amount': 80, 'days': 8},
-    {'name': 'U7', 'amount': 300, 'days': 15},
-    {'name': 'U8', 'amount': 700, 'days': 22},
-    {'name': 'U9', 'amount': 150, 'days': 10},
-]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: Z-score标准化
-# 提示: z = (x - mean) / std
-
-
-# TODO 2: 实现KMeans聚类(k=3)
-# 提示:
-#   a. 计算每个点到各中心的距离
-#   b. 将点分配给最近的中心
-#   c. 重新计算每组的中心(均值)
-#   d. 重复直到稳定
-
-
-# TODO 3: 输出聚类结果并解读每组特征
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `import math
-
-# 用户数据
-users = [
-    {'name': 'U1', 'amount': 500, 'days': 25},
-    {'name': 'U2', 'amount': 50, 'days': 3},
-    {'name': 'U3', 'amount': 800, 'days': 30},
-    {'name': 'U4', 'amount': 100, 'days': 5},
-    {'name': 'U5', 'amount': 600, 'days': 28},
-    {'name': 'U6', 'amount': 80, 'days': 8},
-    {'name': 'U7', 'amount': 300, 'days': 15},
-    {'name': 'U8', 'amount': 700, 'days': 22},
-    {'name': 'U9', 'amount': 150, 'days': 10},
-]
-
-# 1. Z-score标准化
-amounts = [u['amount'] for u in users]
-days = [u['days'] for u in users]
-
-mean_a = sum(amounts) / len(amounts)
-std_a = (sum((x - mean_a) ** 2 for x in amounts) / len(amounts)) ** 0.5
-mean_d = sum(days) / len(days)
-std_d = (sum((x - mean_d) ** 2 for x in days) / len(days)) ** 0.5
-
-data = []
-for u in users:
-    za = (u['amount'] - mean_a) / std_a
-    zd = (u['days'] - mean_d) / std_d
-    data.append((za, zd))
-
-print("标准化完成")
-
-# 2. KMeans聚类(k=3)
-def distance(p1, p2):
-    return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
-
-k = 3
-centers = [data[0], data[3], data[6]]  # 初始中心
-
-for iteration in range(20):
-    labels = []
-    for point in data:
-        dists = [distance(point, c) for c in centers]
-        labels.append(dists.index(min(dists)))
-    new_centers = []
-    for j in range(k):
-        members = [data[i] for i in range(len(data)) if labels[i] == j]
-        if members:
-            cx = sum(p[0] for p in members) / len(members)
-            cy = sum(p[1] for p in members) / len(members)
-            new_centers.append((cx, cy))
-        else:
-            new_centers.append(centers[j])
-    if new_centers == centers:
-        break
-    centers = new_centers
-
-# 3. 输出结果
-print("\\n=== 聚类结果 ===")
-for c in range(k):
-    members = [users[i] for i in range(len(users)) if labels[i] == c]
-    avg_a = sum(m['amount'] for m in members) / len(members)
-    avg_d = sum(m['days'] for m in members) / len(members)
-    names = ', '.join([m['name'] for m in members])
-    print("第%d组(%d人): %s" % (c + 1, len(members), names))
-    print("  平均消费=%.0f元, 平均活跃=%.0f天" % (avg_a, avg_d))
-    if avg_a > 500:
-        print("  -> 高价值用户")
-    elif avg_a > 200:
-        print("  -> 中等价值用户")
-    else:
-        print("  -> 待激活用户")
-
-print("\\n聚类完成!")
-`
-                }
+                practice: { tasks: ["实现KMeans"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 5,
                 title: "RFM分层",
-                desc: "学习RFM用户分层模型，用R/F/M三维度评估用户价值",
+                desc: "学习R/F/M指标计算、分位数打分、用户分层与运营策略",
+                tags: ["RFM", "用户价值", "运营"],
                 learn: {
-                    concept: {
-                        title: "什么是RFM模型？",
-                        content: `
-                            <p class="concept-text">
-                                RFM是企业最常用的<strong>用户分层模型</strong>，通过三个维度评估用户价值：
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>不是所有用户都一样重要。RFM帮你识别谁是高价值用户，谁是流失风险用户。
-                            </div>
-                            <ul class="concept-text">
-                                <li>🕐 <strong>R(Recency)</strong> — 最近一次消费距今天数，越小越好</li>
-                                <li>🔄 <strong>F(Frequency)</strong> — 消费频次，越多越好</li>
-                                <li>💰 <strong>M(Monetary)</strong> — 消费金额，越多越好</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>分层标准（5分制打分，总分15分）：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>⭐ <strong>高价值用户</strong> — 总分 >= 13分</li>
-                                <li>📈 <strong>潜力用户</strong> — 总分 10-12分</li>
-                                <li>📊 <strong>一般用户</strong> — 总分 7-9分</li>
-                                <li>[!]️ <strong>流失用户</strong> — 总分 < 7分</li>
-                            </ul>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "RFM指标计算",
-                            code: `# 模拟用户交易数据
-transactions = [
-    {'user': 'U1', 'date': '2024-01-15', 'amount': 500},
-    {'user': 'U1', 'date': '2024-01-20', 'amount': 300},
-    {'user': 'U1', 'date': '2024-01-28', 'amount': 800},
-    {'user': 'U2', 'date': '2023-11-05', 'amount': 100},
-    {'user': 'U2', 'date': '2023-12-10', 'amount': 150},
-    {'user': 'U3', 'date': '2024-01-25', 'amount': 200},
-    {'user': 'U3', 'date': '2024-01-27', 'amount': 250},
-    {'user': 'U4', 'date': '2023-08-15', 'amount': 50},
-    {'user': 'U5', 'date': '2024-01-10', 'amount': 600},
-    {'user': 'U5', 'date': '2024-01-22', 'amount': 700},
-    {'user': 'U5', 'date': '2024-01-29', 'amount': 900},
-]
-
-today = '2024-01-30'
-
-# 按用户汇总RFM
-from collections import defaultdict
-user_data = defaultdict(lambda: {'dates': [], 'amounts': []})
-
-for t in transactions:
-    user_data[t['user']]['dates'].append(t['date'])
-    user_data[t['user']]['amounts'].append(t['amount'])
-
-rfm = {}
-for user, data in user_data.items():
-    dates = sorted(data['dates'], reverse=True)
-    # R: 最近消费距今天数
-    r = 30  # 简化计算
-    # F: 消费频次
-    f = len(data['amounts'])
-    # M: 消费总金额
-    m = sum(data['amounts'])
-    rfm[user] = {'R': r, 'F': f, 'M': m}
-    print("用户%s: R=%d天, F=%d次, M=%.0f元" % (user, r, f, m))`,
-                            explanation: "R值越小说明用户越活跃（最近刚消费过），F值越大说明忠诚度高，M值越大说明消费能力强。"
-                        },
-                        {
-                            number: 2,
-                            title: "分位数打分（5分制）",
-                            code: `# 提取各维度值
-r_values = sorted([rfm[u]['R'] for u in rfm])
-f_values = sorted([rfm[u]['F'] for u in rfm])
-m_values = sorted([rfm[u]['M'] for u in rfm])
-
-print("R值分布:", r_values)
-print("F值分布:", f_values)
-print("M值分布:", m_values)
-
-# 分位数打分函数
-def score_by_quantile(value, values, reverse=False):
-    """按分位数打分1-5分"""
-    n = len(values)
-    for i, v in enumerate(sorted(values)):
-        if value <= v:
-            score = min(5, max(1, (i * 5) // n + 1))
-            if reverse:  # R越小越好，需要反转
-                score = 6 - score
-            return score
-    return 5
-
-# 打分
-for user in rfm:
-    r_score = score_by_quantile(rfm[user]['R'], r_values, reverse=True)
-    f_score = score_by_quantile(rfm[user]['F'], f_values)
-    m_score = score_by_quantile(rfm[user]['M'], m_values)
-    rfm[user]['R_score'] = r_score
-    rfm[user]['F_score'] = f_score
-    rfm[user]['M_score'] = m_score
-    rfm[user]['total'] = r_score + f_score + m_score
-    print("用户%s: R=%d分, F=%d分, M=%d分, 总分=%d" % (
-        user, r_score, f_score, m_score, rfm[user]['total']))`,
-                            explanation: "分位数打分确保分数分布均匀。注意R值是反向的（越小越好），所以需要反转打分。"
-                        },
-                        {
-                            number: 3,
-                            title: "用户分层 + 运营策略",
-                            code: `# 用户分层
-def get_segment(total):
-    if total >= 13:
-        return '高价值用户'
-    elif total >= 10:
-        return '潜力用户'
-    elif total >= 7:
-        return '一般用户'
-    else:
-        return '流失用户'
-
-# 策略建议
-strategies = {
-    '高价值用户': '提供VIP服务、专属折扣、新品优先体验',
-    '潜力用户': '定向优惠券、提升消费频次活动',
-    '一般用户': '定期推送、满减活动提升消费',
-    '流失用户': '召回活动、大额优惠券激活',
-}
-
-print("=== 用户分层结果 ===")
-segments = {}
-for user in sorted(rfm.keys()):
-    seg = get_segment(rfm[user]['total'])
-    segments.setdefault(seg, []).append(user)
-    print("用户%s -> %s (总分%d)" % (user, seg, rfm[user]['total']))
-
-print()
-print("=== 分层统计 ===")
-for seg in ['高价值用户', '潜力用户', '一般用户', '流失用户']:
-    users_in_seg = segments.get(seg, [])
-    print("%s: %d人 (%s)" % (seg, len(users_in_seg), ', '.join(users_in_seg)))
-    if users_in_seg:
-        print("  运营策略: %s" % strategies[seg])`,
-                            explanation: "分层后针对不同群体制定差异化运营策略：高价值用户要维护，潜力用户要培养，流失用户要召回。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "RFM中R代表什么？",
-                            options: [
-                                "A. Revenue(收入)",
-                                "B. Recency(最近消费时间)",
-                                "C. Rate(比率)"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "RFM总分15分的用户属于哪类？",
-                            options: [
-                                "A. 高价值用户",
-                                "B. 潜力用户",
-                                "C. 一般用户"
-                            ],
-                            correct: 0
-                        },
-                        {
-                            question: "R值打分为什么要反转？",
-                            options: [
-                                "A. R值越大越好",
-                                "B. R值越小越好(越近越活跃)",
-                                "C. 随机反转"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是RFM模型？", content: "<p class='concept-text'>R(Recency): 最近消费天数<br>F(Frequency): 消费频次<br>M(Monetary): 消费金额</p>" },
+                    steps: [{ number: 1, title: "RFM计算", code: "# 计算RFM", explanation: "三个核心指标" }],
+                    quiz: [{ question: "R越小表示？", options: ["A.越活跃", "B.越不活跃", "C.无关"], correct: 0 }]
                 },
-                practice: {
-                    tasks: [
-                        "计算每个用户的R、F、M指标",
-                        "对R、F、M分别进行5分制打分",
-                        "根据总分进行用户分层并输出运营策略"
-                    ],
-                    template: `# 用户交易数据（日期为距今天数）
-transactions = [
-    {'user': 'U1', 'days_ago': 3, 'amount': 500},
-    {'user': 'U1', 'days_ago': 8, 'amount': 300},
-    {'user': 'U1', 'days_ago': 15, 'amount': 800},
-    {'user': 'U2', 'days_ago': 60, 'amount': 100},
-    {'user': 'U2', 'days_ago': 45, 'amount': 150},
-    {'user': 'U3', 'days_ago': 5, 'amount': 200},
-    {'user': 'U3', 'days_ago': 12, 'amount': 250},
-    {'user': 'U3', 'days_ago': 20, 'amount': 300},
-    {'user': 'U4', 'days_ago': 90, 'amount': 50},
-    {'user': 'U4', 'days_ago': 120, 'amount': 80},
-    {'user': 'U5', 'days_ago': 2, 'amount': 600},
-    {'user': 'U5', 'days_ago': 7, 'amount': 700},
-    {'user': 'U5', 'days_ago': 10, 'amount': 900},
-    {'user': 'U6', 'days_ago': 30, 'amount': 120},
-    {'user': 'U6', 'days_ago': 50, 'amount': 180},
-]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 计算每个用户的R(最近消费距今天数)、F(消费频次)、M(消费总额)
-# 提示: 用字典按user分组汇总
-
-
-# TODO 2: 对R/F/M分别打分(1-5分)
-# R越小分越高，F越大分越高，M越大分越高
-# 提示: 按排名打分，前20%得5分
-
-
-# TODO 3: 根据总分分层
-# >=13 高价值, 10-12 潜力, 7-9 一般, <7 流失
-# 输出每层用户和运营策略
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 用户交易数据
-transactions = [
-    {'user': 'U1', 'days_ago': 3, 'amount': 500},
-    {'user': 'U1', 'days_ago': 8, 'amount': 300},
-    {'user': 'U1', 'days_ago': 15, 'amount': 800},
-    {'user': 'U2', 'days_ago': 60, 'amount': 100},
-    {'user': 'U2', 'days_ago': 45, 'amount': 150},
-    {'user': 'U3', 'days_ago': 5, 'amount': 200},
-    {'user': 'U3', 'days_ago': 12, 'amount': 250},
-    {'user': 'U3', 'days_ago': 20, 'amount': 300},
-    {'user': 'U4', 'days_ago': 90, 'amount': 50},
-    {'user': 'U4', 'days_ago': 120, 'amount': 80},
-    {'user': 'U5', 'days_ago': 2, 'amount': 600},
-    {'user': 'U5', 'days_ago': 7, 'amount': 700},
-    {'user': 'U5', 'days_ago': 10, 'amount': 900},
-    {'user': 'U6', 'days_ago': 30, 'amount': 120},
-    {'user': 'U6', 'days_ago': 50, 'amount': 180},
-]
-
-# 1. 计算RFM
-user_rfm = {}
-for t in transactions:
-    u = t['user']
-    if u not in user_rfm:
-        user_rfm[u] = {'R': t['days_ago'], 'F': 0, 'M': 0}
-    user_rfm[u]['R'] = min(user_rfm[u]['R'], t['days_ago'])
-    user_rfm[u]['F'] += 1
-    user_rfm[u]['M'] += t['amount']
-
-print("=== RFM指标 ===")
-for u in sorted(user_rfm.keys()):
-    r = user_rfm[u]
-    print("  %s: R=%d天, F=%d次, M=%.0f元" % (u, r['R'], r['F'], r['M']))
-
-# 2. 打分
-def rank_score(value, all_values, reverse=False):
-    sorted_vals = sorted(all_values)
-    rank = sorted_vals.index(value) + 1
-    n = len(all_values)
-    score = max(1, min(5, (rank * 5 + n - 1) // n))
-    if reverse:
-        score = 6 - score
-    return score
-
-r_vals = [user_rfm[u]['R'] for u in user_rfm]
-f_vals = [user_rfm[u]['F'] for u in user_rfm]
-m_vals = [user_rfm[u]['M'] for u in user_rfm]
-
-for u in user_rfm:
-    user_rfm[u]['R_s'] = rank_score(user_rfm[u]['R'], r_vals, reverse=True)
-    user_rfm[u]['F_s'] = rank_score(user_rfm[u]['F'], f_vals)
-    user_rfm[u]['M_s'] = rank_score(user_rfm[u]['M'], m_vals)
-    user_rfm[u]['total'] = user_rfm[u]['R_s'] + user_rfm[u]['F_s'] + user_rfm[u]['M_s']
-
-# 3. 分层
-segments = {'高价值用户': [], '潜力用户': [], '一般用户': [], '流失用户': []}
-for u in sorted(user_rfm.keys()):
-    r = user_rfm[u]
-    total = r['total']
-    if total >= 13:
-        seg = '高价值用户'
-    elif total >= 10:
-        seg = '潜力用户'
-    elif total >= 7:
-        seg = '一般用户'
-    else:
-        seg = '流失用户'
-    segments[seg].append(u)
-    print("%s: R=%d F=%d M=%d 总分=%d -> %s" % (
-        u, r['R_s'], r['F_s'], r['M_s'], total, seg))
-
-print("\\n=== 分层统计 ===")
-strategies = {
-    '高价值用户': 'VIP专属服务、优先体验新品',
-    '潜力用户': '定向优惠券、提升消费频次',
-    '一般用户': '满减活动、定期推送',
-    '流失用户': '大额优惠券召回、调研原因',
-}
-for seg, users in segments.items():
-    print("%s(%d人): %s" % (seg, len(users), ', '.join(users) if users else '无'))
-    print("  策略: %s" % strategies[seg])
-
-print("\\nRFM分析完成!")
-`
-                }
+                practice: { tasks: ["RFM分层"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 6,
                 title: "线性回归",
-                desc: "学习线性回归原理、最小二乘法、模型评估指标",
+                desc: "学习最小二乘法、一元/多元回归、R2/MAE评估",
+                tags: ["回归", "预测", "最小二乘"],
                 learn: {
-                    concept: {
-                        title: "什么是线性回归？",
-                        content: `
-                            <p class="concept-text">
-                                线性回归用<strong>一条直线拟合数据</strong>，找到变量 x 和 y 之间的关系。
-                                公式: <strong>y = ax + b</strong>（a=斜率，b=截距）
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>找到一条直线，让所有数据点到这条线的距离之和最小（最小二乘法）。
-                            </div>
-                            <p class="concept-text">
-                                <strong>关键评估指标：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>R²(决定系数)</strong> — 模型解释了多少变异，0-1之间，越接近1越好</li>
-                                <li>📏 <strong>MAE(平均绝对误差)</strong> — 预测值与真实值的平均偏差</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>业务场景：</strong>销量预测、广告效果评估、价格弹性分析
-                            </p>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "一元线性回归（广告费->销量）",
-                            code: `# 广告费与销量数据
-data = [
-    (100, 150), (200, 280), (300, 350),
-    (400, 480), (500, 520), (600, 610),
-    (700, 750), (800, 820), (900, 900),
-]
-
-n = len(data)
-x = [d[0] for d in data]
-y = [d[1] for d in data]
-
-# 最小二乘法: y = ax + b
-sum_x = sum(x)
-sum_y = sum(y)
-sum_xy = sum(x[i] * y[i] for i in range(n))
-sum_x2 = sum(xi ** 2 for xi in x)
-
-a = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
-b = (sum_y - a * sum_x) / n
-
-print("回归方程: y = %.2fx + %.2f" % (a, b))
-print("斜率a=%.2f: 广告费每增加1元, 销量增加%.2f" % (a, a))
-print("截距b=%.2f: 广告费为0时, 基础销量%.2f" % (b, b))`,
-                            explanation: "最小二乘法通过数学公式直接求解最优的a和b，使所有预测值与真实值的误差平方和最小。"
-                        },
-                        {
-                            number: 2,
-                            title: "多元线性回归（多因素->销量）",
-                            code: `# 多元回归: 销量 = a1*广告费 + a2*活动次数 + a3*客单价 + b
-# 简化演示: 用正规方程求解 (X^T X)^-1 X^T y
-data_multi = [
-    (100, 2, 80, 150),
-    (200, 3, 90, 280),
-    (300, 5, 85, 350),
-    (400, 4, 95, 480),
-    (500, 6, 88, 520),
-    (600, 7, 92, 610),
-    (700, 8, 90, 750),
-    (800, 9, 85, 820),
-    (900, 10, 95, 900),
-]
-
-# 简化: 分别做一元回归看各因素的贡献
-n = len(data_multi)
-for col_idx, name in [(0, '广告费'), (1, '活动次数'), (2, '客单价')]:
-    xi = [d[col_idx] for d in data_multi]
-    yi = [d[3] for d in data_multi]
-    sum_xi = sum(xi)
-    sum_yi = sum(yi)
-    sum_xiyi = sum(xi[j] * yi[j] for j in range(n))
-    sum_xi2 = sum(x ** 2 for x in xi)
-    ai = (n * sum_xiyi - sum_xi * sum_yi) / (n * sum_xi2 - sum_xi ** 2)
-    print("%s的回归系数: %.2f" % (name, ai))`,
-                            explanation: "多元回归同时考虑多个因素对目标变量的影响。回归系数越大，说明该因素对目标的影响越大。"
-                        },
-                        {
-                            number: 3,
-                            title: "模型评估（R²、MAE）",
-                            code: `# 用一元回归模型评估
-y_pred = [a * xi + b for xi in x]
-
-# R² = 1 - SS_res / SS_tot
-mean_y = sum(y) / n
-ss_tot = sum((yi - mean_y) ** 2 for yi in y)
-ss_res = sum((y[i] - y_pred[i]) ** 2 for i in range(n))
-r_squared = 1 - ss_res / ss_tot
-
-# MAE
-mae = sum(abs(y[i] - y_pred[i]) for i in range(n)) / n
-
-print("=== 模型评估 ===")
-print("R² = %.4f (模型解释了%.1f%%的变异)" % (r_squared, r_squared * 100))
-print("MAE = %.2f (平均预测误差%.2f件)" % (mae, mae))
-
-# 预测示例
-ad_budget = 1000
-predicted_sales = a * ad_budget + b
-print()
-print("=== 预测 ===")
-print("广告费=%d元 -> 预测销量=%.0f件" % (ad_budget, predicted_sales))
-
-# 查看残差
-print()
-print("=== 残差分析 ===")
-for i in range(n):
-    residual = y[i] - y_pred[i]
-    print("  广告费=%d: 实际=%d, 预测=%.0f, 残差=%.1f" % (
-        x[i], y[i], y_pred[i], residual))`,
-                            explanation: "R²越接近1说明模型越好。R²=0.99意味着模型能解释99%的数据变异。MAE告诉你平均预测偏差有多大。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "线性回归公式 y=ax+b 中，a代表什么？",
-                            options: [
-                                "A. 截距",
-                                "B. 斜率",
-                                "C. 误差"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "R²=0.95表示什么？",
-                            options: [
-                                "A. 预测95%正确",
-                                "B. 模型解释了95%的数据变异",
-                                "C. 误差为5%"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "最小二乘法的目标是什么？",
-                            options: [
-                                "A. 最大化R²",
-                                "B. 最小化误差平方和",
-                                "C. 最小化MAE"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是线性回归？", content: "<p class='concept-text'>用一条直线拟合数据，找到 x 和 y 的关系。</p>" },
+                    steps: [{ number: 1, title: "回归方程", code: "# y = ax + b", explanation: "最小二乘法求解" }],
+                    quiz: [{ question: "R2越高表示？", options: ["A.模型越差", "B.模型越好", "C.无关"], correct: 1 }]
                 },
-                practice: {
-                    tasks: [
-                        "用最小二乘法手动计算回归方程 y=ax+b",
-                        "计算R²和MAE评估模型",
-                        "用模型预测广告费为1500元时的销量"
-                    ],
-                    template: `# 广告费与销量数据
-data = [
-    (50, 80), (100, 150), (150, 220),
-    (200, 310), (250, 380), (300, 420),
-    (350, 500), (400, 580), (450, 620),
-    (500, 710), (550, 780), (600, 850),
-]
-
-n = len(data)
-x = [d[0] for d in data]
-y = [d[1] for d in data]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 用最小二乘法计算 a(斜率) 和 b(截距)
-# 公式: a = (n*sum(xy) - sum(x)*sum(y)) / (n*sum(x^2) - sum(x)^2)
-#       b = (sum(y) - a*sum(x)) / n
-
-
-# TODO 2: 计算R²和MAE
-# R² = 1 - SS_res/SS_tot
-# MAE = sum(|y_i - y_pred_i|) / n
-
-
-# TODO 3: 预测广告费为1500元时的销量
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 广告费与销量数据
-data = [
-    (50, 80), (100, 150), (150, 220),
-    (200, 310), (250, 380), (300, 420),
-    (350, 500), (400, 580), (450, 620),
-    (500, 710), (550, 780), (600, 850),
-]
-
-n = len(data)
-x = [d[0] for d in data]
-y = [d[1] for d in data]
-
-# 1. 最小二乘法
-sum_x = sum(x)
-sum_y = sum(y)
-sum_xy = sum(x[i] * y[i] for i in range(n))
-sum_x2 = sum(xi ** 2 for xi in x)
-
-a = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
-b = (sum_y - a * sum_x) / n
-
-print("回归方程: y = %.4fx + %.4f" % (a, b))
-print("广告费每增加1元, 销量增加%.2f件" % a)
-
-# 2. R²和MAE
-y_pred = [a * xi + b for xi in x]
-mean_y = sum(y) / n
-ss_tot = sum((yi - mean_y) ** 2 for yi in y)
-ss_res = sum((y[i] - y_pred[i]) ** 2 for i in range(n))
-r2 = 1 - ss_res / ss_tot
-mae = sum(abs(y[i] - y_pred[i]) for i in range(n)) / n
-
-print("\\nR^2 = %.4f (解释了%.1f%%的变异)" % (r2, r2 * 100))
-print("MAE = %.2f (平均误差%.2f件)" % (mae, mae))
-
-# 3. 预测
-ad = 1500
-pred = a * ad + b
-print("\\n广告费=%d元 -> 预测销量=%.0f件" % (ad, pred))
-
-# 残差
-print("\\n残差分析:")
-for i in range(n):
-    print("  x=%d: 实际=%d, 预测=%.0f, 残差=%.1f" % (
-        x[i], y[i], y_pred[i], y[i] - y_pred[i]))
-
-print("\\n回归分析完成!")
-`
-                }
+                practice: { tasks: ["实现回归"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 7,
                 title: "随机森林",
-                desc: "学习决策树与随机森林原理、Bootstrap采样、特征重要性",
+                desc: "学习Gini决策树、Bootstrap采样、特征重要性",
+                tags: ["随机森林", "决策树", "特征重要性"],
                 learn: {
-                    concept: {
-                        title: "什么是随机森林？",
-                        content: `
-                            <p class="concept-text">
-                                随机森林是<strong>多棵决策树"投票"</strong>的集成方法。
-                                每棵树用不同的数据子集训练（Bootstrap采样），最终结果由所有树投票决定。
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>"三个臭皮匠，顶个诸葛亮"。单棵决策树容易过拟合，但多棵树投票的结果更加稳定可靠。
-                            </div>
-                            <p class="concept-text">
-                                <strong>核心优势：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>🎯 <strong>能捕捉非线性关系</strong> — 不像线性回归只能拟合直线</li>
-                                <li>🛡️ <strong>不容易过拟合</strong> — 多棵树取平均，降低方差</li>
-                                <li>📊 <strong>特征重要性</strong> — 自动告诉你哪个因素最重要</li>
-                            </ul>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "单棵决策树（找最优切分点）",
-                            code: `# 用户数据: [年龄, 消费金额, 是否购买(1/0)]
-data = [
-    [25, 200, 0], [30, 500, 1], [45, 800, 1],
-    [20, 100, 0], [35, 600, 1], [50, 300, 0],
-    [28, 400, 1], [40, 700, 1], [22, 150, 0],
-    [55, 900, 1], [38, 550, 1], [60, 200, 0],
-]
-
-# 计算Gini不纯度
-def gini(labels):
-    n = len(labels)
-    if n == 0:
-        return 0
-    counts = {}
-    for l in labels:
-        counts[l] = counts.get(l, 0) + 1
-    return 1 - sum((c / float(n)) ** 2 for c in counts.values())
-
-# 找最优切分点
-best_gini = 1
-best_feature = -1
-best_threshold = 0
-
-for feature in [0, 1]:  # 年龄或消费金额
-    values = sorted(set(d[feature] for d in data))
-    for i in range(len(values) - 1):
-        threshold = (values[i] + values[i + 1]) / 2.0
-        left = [d[2] for d in data if d[feature] <= threshold]
-        right = [d[2] for d in data if d[feature] > threshold]
-        g = (len(left) * gini(left) + len(right) * gini(right)) / len(data)
-        if g < best_gini:
-            best_gini = g
-            best_feature = feature
-            best_threshold = threshold
-
-fname = ['年龄', '消费金额'][best_feature]
-print("最优切分: %s <= %.0f (Gini=%.3f)" % (fname, best_threshold, best_gini))`,
-                            explanation: "决策树通过遍历所有特征和所有可能的切分点，选择使Gini不纯度最小的切分。Gini越小，说明分组越'纯'。"
-                        },
-                        {
-                            number: 2,
-                            title: "随机森林（多棵树集成）",
-                            code: `import random
-random.seed(42)
-
-# 简化决策树
-def build_tree(data, max_depth=3):
-    labels = [d[2] for d in data]
-    if len(set(labels)) == 1 or max_depth == 0:
-        return {'leaf': True, 'value': round(sum(labels) / len(labels))}
-    best_g = 1
-    best_f = -1
-    best_t = 0
-    for f in [0, 1]:
-        vals = sorted(set(d[f] for d in data))
-        for i in range(len(vals) - 1):
-            t = (vals[i] + vals[i + 1]) / 2.0
-            left = [d[2] for d in data if d[f] <= t]
-            right = [d[2] for d in data if d[f] > t]
-            g = (len(left) * gini(left) + len(right) * gini(right)) / len(data)
-            if g < best_g:
-                best_g = g
-                best_f = f
-                best_t = t
-    left_data = [d for d in data if d[best_f] <= best_t]
-    right_data = [d for d in data if d[best_f] > best_t]
-    return {
-        'leaf': False,
-        'feature': best_f,
-        'threshold': best_t,
-        'left': build_tree(left_data, max_depth - 1),
-        'right': build_tree(right_data, max_depth - 1)
-    }
-
-# Bootstrap采样 + 训练多棵树
-n_trees = 5
-trees = []
-for i in range(n_trees):
-    sample = [random.choice(data) for _ in range(len(data))]
-    tree = build_tree(sample)
-    trees.append(tree)
-    print("第%d棵树训练完成" % (i + 1))
-
-print("\\n共训练%d棵决策树" % n_trees)`,
-                            explanation: "Bootstrap采样是有放回的随机采样，每棵树看到的数据都不同，这使得每棵树都有差异，集成后更稳健。"
-                        },
-                        {
-                            number: 3,
-                            title: "特征重要性排序",
-                            code: `# 预测函数
-def predict(tree, sample):
-    if tree['leaf']:
-        return tree['value']
-    if sample[tree['feature']] <= tree['threshold']:
-        return predict(tree['left'], sample)
-    else:
-        return predict(tree['right'], sample)
-
-# 森林预测（取平均）
-def forest_predict(trees, sample):
-    preds = [predict(t, sample) for t in trees]
-    return round(sum(preds) / len(preds))
-
-# 特征重要性（置换法）
-def calc_importance(trees, data, feature_idx):
-    base_error = 0
-    perm_error = 0
-    for d in data:
-        true_val = d[2]
-        pred = forest_predict(trees, d)
-        base_error += (true_val - pred) ** 2
-        # 置换该特征
-        perm_sample = list(d)
-        perm_sample[feature_idx] = random.choice([x[feature_idx] for x in data])
-        perm_pred = forest_predict(trees, perm_sample)
-        perm_error += (true_val - perm_pred) ** 2
-    return (perm_error - base_error) / len(data)
-
-print("=== 特征重要性 ===")
-for idx, name in enumerate(['年龄', '消费金额']):
-    imp = calc_importance(trees, data, idx)
-    print("  %s: %.2f" % (name, imp))
-
-print("\\n=== 预测示例 ===")
-test = [32, 450]
-pred = forest_predict(trees, test)
-print("年龄=%d, 消费=%.0f -> 购买概率=%.0f%%" % (test[0], test[1], pred * 100))`,
-                            explanation: "特征重要性通过'置换法'计算：随机打乱某特征后，如果模型误差显著增加，说明该特征很重要。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "随机森林中Bootstrap采样的特点是什么？",
-                            options: [
-                                "A. 无放回采样",
-                                "B. 有放回采样",
-                                "C. 只采样一半数据"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "随机森林相比单棵决策树的主要优势是什么？",
-                            options: [
-                                "A. 训练更快",
-                                "B. 不容易过拟合",
-                                "C. 代码更简单"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "特征重要性如何计算？",
-                            options: [
-                                "A. 看哪个特征值最大",
-                                "B. 置换后模型误差增加越多越重要",
-                                "C. 随机选择"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是随机森林？", content: "<p class='concept-text'>多棵决策树'投票'的集成方法。</p>" },
+                    steps: [{ number: 1, title: "决策树", code: "# 单棵树", explanation: "找最优切分点" }],
+                    quiz: [{ question: "随机森林的优势？", options: ["A.容易过拟合", "B.不容易过拟合", "C.计算快"], correct: 1 }]
                 },
-                practice: {
-                    tasks: [
-                        "实现简化的决策树（Gini切分）",
-                        "用Bootstrap采样训练3棵决策树",
-                        "用森林投票对新样本进行预测"
-                    ],
-                    template: `import random
-random.seed(42)
-
-# 用户数据: [年龄, 月消费, 是否流失(1/0)]
-data = [
-    [25, 200, 1], [30, 500, 0], [45, 800, 0],
-    [20, 100, 1], [35, 600, 0], [50, 300, 1],
-    [28, 400, 0], [40, 700, 0], [22, 150, 1],
-    [55, 900, 0], [38, 550, 0], [60, 200, 1],
-    [33, 350, 0], [48, 250, 1], [27, 180, 1],
-]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 实现Gini不纯度计算函数
-# 提示: gini = 1 - sum(p_i^2)
-
-
-# TODO 2: 实现简化决策树（递归切分，最大深度3）
-# 提示: 遍历特征和阈值，选Gini最小的切分
-
-
-# TODO 3: Bootstrap采样训练3棵树，对测试样本投票预测
-# 测试样本: [年龄=32, 月消费=450]
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `import random
-random.seed(42)
-
-# 用户数据
-data = [
-    [25, 200, 1], [30, 500, 0], [45, 800, 0],
-    [20, 100, 1], [35, 600, 0], [50, 300, 1],
-    [28, 400, 0], [40, 700, 0], [22, 150, 1],
-    [55, 900, 0], [38, 550, 0], [60, 200, 1],
-    [33, 350, 0], [48, 250, 1], [27, 180, 1],
-]
-
-# 1. Gini不纯度
-def gini(labels):
-    n = len(labels)
-    if n == 0:
-        return 0
-    counts = {}
-    for l in labels:
-        counts[l] = counts.get(l, 0) + 1
-    return 1 - sum((c / float(n)) ** 2 for c in counts.values())
-
-# 2. 简化决策树
-def build_tree(data, max_depth=3):
-    labels = [d[2] for d in data]
-    if len(set(labels)) == 1 or max_depth == 0 or len(data) < 2:
-        return {'leaf': True, 'value': round(sum(labels) / len(labels))}
-    best_g = 1
-    best_f = -1
-    best_t = 0
-    for f in [0, 1]:
-        vals = sorted(set(d[f] for d in data))
-        for i in range(len(vals) - 1):
-            t = (vals[i] + vals[i + 1]) / 2.0
-            left_l = [d[2] for d in data if d[f] <= t]
-            right_l = [d[2] for d in data if d[f] > t]
-            if not left_l or not right_l:
-                continue
-            g = (len(left_l) * gini(left_l) + len(right_l) * gini(right_l)) / len(data)
-            if g < best_g:
-                best_g = g
-                best_f = f
-                best_t = t
-    if best_f == -1:
-        return {'leaf': True, 'value': round(sum(labels) / len(labels))}
-    left_d = [d for d in data if d[best_f] <= best_t]
-    right_d = [d for d in data if d[best_f] > best_t]
-    return {
-        'leaf': False,
-        'feature': best_f,
-        'threshold': best_t,
-        'left': build_tree(left_d, max_depth - 1),
-        'right': build_tree(right_d, max_depth - 1)
-    }
-
-def predict(tree, sample):
-    if tree['leaf']:
-        return tree['value']
-    if sample[tree['feature']] <= tree['threshold']:
-        return predict(tree['left'], sample)
-    else:
-        return predict(tree['right'], sample)
-
-# 3. 训练3棵树并预测
-trees = []
-for i in range(3):
-    sample = [random.choice(data) for _ in range(len(data))]
-    tree = build_tree(sample)
-    trees.append(tree)
-    print("第%d棵树训练完成" % (i + 1))
-
-# 预测
-test = [32, 450]
-preds = [predict(t, test) for t in trees]
-avg_pred = sum(preds) / len(preds)
-print("\\n测试样本: 年龄=%d, 月消费=%d" % (test[0], test[1]))
-print("各树预测: %s" % [str(round(p * 100)) + '%' for p in preds])
-print("森林预测(平均): 流失概率=%.0f%%" % (avg_pred * 100))
-if avg_pred < 0.5:
-    print("-> 预测: 不会流失")
-else:
-    print("-> 预测: 可能流失")
-
-print("\\n随机森林完成!")
-`
-                }
+                practice: { tasks: ["特征重要性"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 8,
                 title: "时间序列",
-                desc: "学习移动平均、趋势识别、时间序列预测方法",
+                desc: "学习移动平均、趋势识别、基于趋势外推的预测",
+                tags: ["时间序列", "移动平均", "预测"],
                 learn: {
-                    concept: {
-                        title: "什么是时间序列分析？",
-                        content: `
-                            <p class="concept-text">
-                                时间序列分析用于研究<strong>数据随时间变化的规律</strong>。
-                                核心组成：<strong>趋势 + 周期 + 随机波动</strong>
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>通过分析历史数据的规律，预测未来走势。就像看天气趋势决定明天穿什么。
-                            </div>
-                            <p class="concept-text">
-                                <strong>常用方法：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>移动平均</strong> — 平滑数据看趋势，消除短期波动</li>
-                                <li>📈 <strong>趋势识别</strong> — 判断数据是上升、下降还是平稳</li>
-                                <li>🎯 <strong>简单预测</strong> — 基于趋势外推未来值</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>业务场景：</strong>销量预测、库存规划、流量预估
-                            </p>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "移动平均计算",
-                            code: `# 12个月的销量数据
-months = ['1月', '2月', '3月', '4月', '5月', '6月',
-          '7月', '8月', '9月', '10月', '11月', '12月']
-sales = [120, 135, 150, 145, 160, 180, 175, 190, 200, 195, 210, 230]
-
-# 3个月移动平均
-window = 3
-ma_3 = []
-for i in range(len(sales)):
-    if i < window - 1:
-        ma_3.append(None)
-    else:
-        avg = sum(sales[i - window + 1:i + 1]) / window
-        ma_3.append(round(avg, 1))
-
-print("月份 | 销量 | 3月移动平均")
-print("-" * 35)
-for i in range(len(months)):
-    ma_str = "%.1f" % ma_3[i] if ma_3[i] is not None else "  -"
-    print("%s | %3d | %s" % (months[i], sales[i], ma_str))
-
-# 计算环比增长率
-print()
-print("=== 环比增长率 ===")
-for i in range(1, len(sales)):
-    growth = (sales[i] - sales[i - 1]) / float(sales[i - 1]) * 100
-    print("%s -> %s: %+.1f%%" % (months[i-1], months[i], growth))`,
-                            explanation: "移动平均用最近N个月的平均值代替当月值，可以平滑短期波动，更清晰地展示长期趋势。"
-                        },
-                        {
-                            number: 2,
-                            title: "趋势和周期识别",
-                            code: `# 计算趋势（线性回归拟合时间序列）
-n = len(sales)
-x = list(range(n))
-sum_x = sum(x)
-sum_y = sum(sales)
-sum_xy = sum(x[i] * sales[i] for i in range(n))
-sum_x2 = sum(xi ** 2 for xi in x)
-
-slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
-intercept = (sum_y - slope * sum_x) / n
-
-print("趋势线: y = %.2fx + %.2f" % (slope, intercept))
-print("月均增长: %.1f件" % slope)
-
-# 趋势方向判断
-if slope > 10:
-    trend = "强劲上升趋势"
-elif slope > 0:
-    trend = "温和上升趋势"
-elif slope == 0:
-    trend = "平稳"
-else:
-    trend = "下降趋势"
-print("趋势判断: %s" % trend)
-
-# 找出峰值和谷值
-peak_month = months[sales.index(max(sales))]
-valley_month = months[sales.index(min(sales))]
-print()
-print("峰值月: %s (%d件)" % (peak_month, max(sales)))
-print("谷值月: %s (%d件)" % (valley_month, min(sales)))
-print("波动幅度: %d件" % (max(sales) - min(sales)))`,
-                            explanation: "用线性回归拟合时间序列可以得到趋势线。斜率为正说明整体上升，斜率大小反映增长速度。"
-                        },
-                        {
-                            number: 3,
-                            title: "简单预测（基于趋势外推）",
-                            code: `# 预测未来3个月
-print("=== 未来3个月预测 ===")
-for i in range(1, 4):
-    future_x = n + i - 1
-    # 趋势预测
-    trend_pred = slope * future_x + intercept
-    # 结合最近移动平均微调
-    recent_ma = sum(sales[-3:]) / 3.0
-    combined_pred = (trend_pred + recent_ma) / 2
-    future_month = "明年%d月" % i
-    print("%s: 趋势预测=%.0f, 综合预测=%.0f" % (
-        future_month, trend_pred, combined_pred))
-
-# 季节性分析（如果数据足够长）
-print()
-print("=== 季节性分析 ===")
-quarters = {
-    'Q1(春)': [sales[0], sales[1], sales[2]],
-    'Q2(夏)': [sales[3], sales[4], sales[5]],
-    'Q3(秋)': [sales[6], sales[7], sales[8]],
-    'Q4(冬)': [sales[9], sales[10], sales[11]],
-}
-for q, vals in quarters.items():
-    avg = sum(vals) / len(vals)
-    print("%s: 平均销量=%.0f件" % (q, avg))`,
-                            explanation: "简单预测结合趋势外推和近期移动平均，比单纯用趋势更准确。实际业务中还需考虑季节性、促销等因素。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "移动平均的主要作用是什么？",
-                            options: [
-                                "A. 增加数据量",
-                                "B. 平滑短期波动，显示趋势",
-                                "C. 计算增长率"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "趋势线斜率为正表示什么？",
-                            options: [
-                                "A. 数据下降",
-                                "B. 数据上升",
-                                "C. 数据平稳"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "时间序列的三个组成部分是什么？",
-                            options: [
-                                "A. 均值、中位数、标准差",
-                                "B. 趋势、周期、随机波动",
-                                "C. 支持度、置信度、提升度"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是时间序列分析？", content: "<p class='concept-text'>分析数据随时间变化的规律。</p>" },
+                    steps: [{ number: 1, title: "移动平均", code: "# 3月移动平均", explanation: "平滑数据看趋势" }],
+                    quiz: [{ question: "移动平均的作用？", options: ["A.平滑波动", "B.增加波动", "C.无关"], correct: 0 }]
                 },
-                practice: {
-                    tasks: [
-                        "计算3个月移动平均",
-                        "找出销量峰值月和谷值月",
-                        "基于趋势预测未来3个月的销量"
-                    ],
-                    template: `# 12个月销量数据
-months = ['1月', '2月', '3月', '4月', '5月', '6月',
-          '7月', '8月', '9月', '10月', '11月', '12月']
-sales = [200, 180, 220, 250, 240, 280, 310, 290, 320, 300, 350, 380]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 计算3个月移动平均
-# 提示: 从第3个月开始，取前3个月平均值
-
-
-# TODO 2: 找出峰值月和谷值月
-# 提示: max(sales), min(sales), sales.index()
-
-
-# TODO 3: 用线性回归拟合趋势，预测未来3个月
-# 提示: y = ax + b, x为月份序号(0-11)
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 12个月销量数据
-months = ['1月', '2月', '3月', '4月', '5月', '6月',
-          '7月', '8月', '9月', '10月', '11月', '12月']
-sales = [200, 180, 220, 250, 240, 280, 310, 290, 320, 300, 350, 380]
-
-n = len(sales)
-
-# 1. 3个月移动平均
-print("=== 3月移动平均 ===")
-ma_3 = []
-for i in range(n):
-    if i < 2:
-        ma_3.append(None)
-    else:
-        avg = sum(sales[i-2:i+1]) / 3.0
-        ma_3.append(round(avg, 1))
-
-print("月份 | 销量 | 移动平均")
-print("-" * 30)
-for i in range(n):
-    ma_str = "%.1f" % ma_3[i] if ma_3[i] is not None else "  -"
-    print("%s | %3d | %s" % (months[i], sales[i], ma_str))
-
-# 2. 峰值和谷值
-peak_idx = sales.index(max(sales))
-valley_idx = sales.index(min(sales))
-print("\\n峰值: %s (%d件)" % (months[peak_idx], sales[peak_idx]))
-print("谷值: %s (%d件)" % (months[valley_idx], sales[valley_idx]))
-print("波动幅度: %d件" % (max(sales) - min(sales)))
-
-# 3. 趋势预测
-x = list(range(n))
-sum_x = sum(x)
-sum_y = sum(sales)
-sum_xy = sum(x[i] * sales[i] for i in range(n))
-sum_x2 = sum(xi ** 2 for xi in x)
-
-a = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
-b = (sum_y - a * sum_x) / n
-
-print("\\n趋势线: y = %.2fx + %.2f" % (a, b))
-print("月均增长: %.1f件" % a)
-
-print("\\n=== 未来3个月预测 ===")
-for i in range(1, 4):
-    pred = a * (n + i - 1) + b
-    print("明年%d月: 预测销量=%.0f件" % (i, pred))
-
-print("\\n时间序列分析完成!")
-`
-                }
+                practice: { tasks: ["销量预测"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 9,
                 title: "异常检测",
-                desc: "学习3sigma原则、IQR方法、异常值检测与分类",
+                desc: "学习3sigma原则、IQR方法、异常类型分类",
+                tags: ["异常检测", "3sigma", "IQR"],
                 learn: {
-                    concept: {
-                        title: "什么是异常检测？",
-                        content: `
-                            <p class="concept-text">
-                                异常检测用于<strong>识别数据中"不正常"的记录</strong>。
-                                这些异常可能是数据错误，也可能是真实的特殊事件。
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心思想：</strong>大多数数据遵循某种规律，偏离规律太远的点就是异常。就像班级里突然有人考了0分或满分。
-                            </div>
-                            <p class="concept-text">
-                                <strong>两种常用方法：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>3sigma原则</strong> — 超出均值 +/- 3倍标准差的范围视为异常</li>
-                                <li>📦 <strong>IQR方法</strong> — 超出 Q1-1.5*IQR 或 Q3+1.5*IQR 视为异常</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>业务场景：</strong>刷单检测、系统故障预警、信用卡欺诈检测
-                            </p>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "3sigma原则检测",
-                            code: `# 订单金额数据
-orders = [50, 65, 80, 45, 120, 90, 75, 55, 2000, 85,
-          70, 60, 95, 110, 40, 88, 72, 68, 1500, 78]
-
-n = len(orders)
-mean = sum(orders) / n
-variance = sum((x - mean) ** 2 for x in orders) / n
-std = variance ** 0.5
-
-lower = mean - 3 * std
-upper = mean + 3 * std
-
-print("=== 3sigma检测 ===")
-print("均值: %.2f" % mean)
-print("标准差: %.2f" % std)
-print("正常范围: [%.2f, %.2f]" % (lower, upper))
-
-outliers_3s = []
-for i, val in enumerate(orders):
-    if val < lower or val > upper:
-        outliers_3s.append((i, val))
-        print("  异常! 订单#%d: %.0f元" % (i + 1, val))
-
-print("\\n共发现 %d 个异常值" % len(outliers_3s))`,
-                            explanation: "3sigma原则假设数据近似正态分布，99.7%的数据落在均值+/-3倍标准差内。超出范围的概率极低，因此视为异常。"
-                        },
-                        {
-                            number: 2,
-                            title: "IQR箱线图检测",
-                            code: `# 排序
-sorted_orders = sorted(orders)
-print("排序后:", sorted_orders)
-
-# 计算四分位数
-def percentile(data, p):
-    """计算第p百分位数"""
-    k = (len(data) - 1) * p / 100.0
-    f = int(k)
-    c = k - f
-    if f + 1 < len(data):
-        return data[f] + c * (data[f + 1] - data[f])
-    return data[f]
-
-q1 = percentile(sorted_orders, 25)
-q2 = percentile(sorted_orders, 50)  # 中位数
-q3 = percentile(sorted_orders, 75)
-iqr = q3 - q1
-
-lower_iqr = q1 - 1.5 * iqr
-upper_iqr = q3 + 1.5 * iqr
-
-print()
-print("=== IQR检测 ===")
-print("Q1(25%%): %.2f" % q1)
-print("Q2(50%%): %.2f" % q2)
-print("Q3(75%%): %.2f" % q3)
-print("IQR: %.2f" % iqr)
-print("正常范围: [%.2f, %.2f]" % (lower_iqr, upper_iqr))
-
-outliers_iqr = []
-for i, val in enumerate(orders):
-    if val < lower_iqr or val > upper_iqr:
-        outliers_iqr.append((i, val))
-        print("  异常! 订单#%d: %.0f元" % (i + 1, val))
-
-print("\\n共发现 %d 个异常值" % len(outliers_iqr))`,
-                            explanation: "IQR方法不依赖正态分布假设，更加稳健。Q1是25%分位数，Q3是75%分位数，IQR=Q3-Q1代表中间50%数据的范围。"
-                        },
-                        {
-                            number: 3,
-                            title: "异常类型分类",
-                            code: `# 对比两种方法的结果
-print("=== 方法对比 ===")
-all_outliers = set(outliers_3s + outliers_iqr)
-only_3s = set(outliers_3s) - set(outliers_iqr)
-only_iqr = set(outliers_iqr) - set(outliers_3s)
-both = set(outliers_3s) & set(outliers_iqr)
-
-print("3sigma检出: %d个" % len(outliers_3s))
-print("IQR检出: %d个" % len(outliers_iqr))
-print("两种方法都检出: %d个" % len(both))
-print("仅3sigma检出: %d个" % len(only_3s))
-print("仅IQR检出: %d个" % len(only_iqr))
-
-# 异常分类
-print()
-print("=== 异常分类 ===")
-for idx, val in sorted(all_outliers):
-    if val > upper:
-        category = "高异常(疑似刷单/大客户)"
-    elif val < lower:
-        category = "低异常(疑似退款/测试单)"
-    else:
-        category = "边界异常"
-    print("  订单#%d: %.0f元 -> %s" % (idx + 1, val, category))
-
-# 处理建议
-print()
-print("=== 处理建议 ===")
-print("1. 高异常: 人工审核，确认是否为真实大额订单")
-print("2. 低异常: 检查是否有退款或系统错误")
-print("3. 边界异常: 标记观察，暂不处理")`,
-                            explanation: "3sigma对极端值更敏感，IQR对中等偏离更敏感。实际业务中建议两种方法结合使用，互相补充。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "3sigma原则中，正常数据占比约为多少？",
-                            options: [
-                                "A. 68%",
-                                "B. 95%",
-                                "C. 99.7%"
-                            ],
-                            correct: 2
-                        },
-                        {
-                            question: "IQR方法中，1.5倍IQR之外的数据被视为？",
-                            options: [
-                                "A. 正常值",
-                                "B. 异常值",
-                                "C. 平均值"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "哪种方法对极端值更敏感？",
-                            options: [
-                                "A. IQR方法",
-                                "B. 3sigma原则",
-                                "C. 两者一样"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "什么是异常检测？", content: "<p class='concept-text'>识别数据中'不正常'的记录。</p>" },
+                    steps: [{ number: 1, title: "3sigma检测", code: "# 3sigma原则", explanation: "超出均值+/-3倍标准差" }],
+                    quiz: [{ question: "IQR方法用哪个分位数？", options: ["A.均值", "B.四分位数", "C.中位数"], correct: 1 }]
                 },
-                practice: {
-                    tasks: [
-                        "用3sigma原则检测订单金额异常值",
-                        "用IQR方法检测订单金额异常值",
-                        "对比两种方法结果，分类异常类型"
-                    ],
-                    template: `# 订单数据: [订单号, 金额, 数量]
-orders = [
-    ('ORD001', 128, 2), ('ORD002', 256, 4), ('ORD003', 89, 1),
-    ('ORD004', 512, 8), ('ORD005', 180, 3), ('ORD006', 95, 1),
-    ('ORD007', 350, 5), ('ORD008', 4200, 60), ('ORD009', 210, 3),
-    ('ORD010', 175, 2), ('ORD011', 310, 4), ('ORD012', 5, 1),
-    ('ORD013', 290, 4), ('ORD014', 160, 2), ('ORD015', 3800, 55),
-    ('ORD016', 225, 3), ('ORD017', 145, 2), ('ORD018', 8, 1),
-    ('ORD019', 270, 4), ('ORD020', 195, 3),
-]
-
-amounts = [o[1] for o in orders]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: 3sigma原则检测
-# 计算均值、标准差，找出超出 mean +/- 3*std 的值
-
-
-# TODO 2: IQR方法检测
-# 计算Q1, Q3, IQR，找出超出 Q1-1.5*IQR 或 Q3+1.5*IQR 的值
-
-
-# TODO 3: 对比两种方法，分类异常(高异常/低异常)
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 订单数据
-orders = [
-    ('ORD001', 128, 2), ('ORD002', 256, 4), ('ORD003', 89, 1),
-    ('ORD004', 512, 8), ('ORD005', 180, 3), ('ORD006', 95, 1),
-    ('ORD007', 350, 5), ('ORD008', 4200, 60), ('ORD009', 210, 3),
-    ('ORD010', 175, 2), ('ORD011', 310, 4), ('ORD012', 5, 1),
-    ('ORD013', 290, 4), ('ORD014', 160, 2), ('ORD015', 3800, 55),
-    ('ORD016', 225, 3), ('ORD017', 145, 2), ('ORD018', 8, 1),
-    ('ORD019', 270, 4), ('ORD020', 195, 3),
-]
-
-amounts = [o[1] for o in orders]
-n = len(amounts)
-
-# 1. 3sigma
-mean = sum(amounts) / n
-std = (sum((x - mean) ** 2 for x in amounts) / n) ** 0.5
-lower_3s = mean - 3 * std
-upper_3s = mean + 3 * std
-
-print("=== 3sigma检测 ===")
-print("均值=%.1f, 标准差=%.1f" % (mean, std))
-print("正常范围: [%.1f, %.1f]" % (lower_3s, upper_3s))
-outliers_3s = []
-for o in orders:
-    if o[1] < lower_3s or o[1] > upper_3s:
-        outliers_3s.append(o)
-        print("  异常: %s 金额=%.0f 数量=%d" % (o[0], o[1], o[2]))
-
-# 2. IQR
-sorted_a = sorted(amounts)
-def percentile(data, p):
-    k = (len(data) - 1) * p / 100.0
-    f = int(k)
-    c = k - f
-    if f + 1 < len(data):
-        return data[f] + c * (data[f + 1] - data[f])
-    return data[f]
-
-q1 = percentile(sorted_a, 25)
-q3 = percentile(sorted_a, 75)
-iqr = q3 - q1
-lower_iqr = q1 - 1.5 * iqr
-upper_iqr = q3 + 1.5 * iqr
-
-print("\\n=== IQR检测 ===")
-print("Q1=%.1f, Q3=%.1f, IQR=%.1f" % (q1, q3, iqr))
-print("正常范围: [%.1f, %.1f]" % (lower_iqr, upper_iqr))
-outliers_iqr = []
-for o in orders:
-    if o[1] < lower_iqr or o[1] > upper_iqr:
-        outliers_iqr.append(o)
-        print("  异常: %s 金额=%.0f 数量=%d" % (o[0], o[1], o[2]))
-
-# 3. 对比分类
-print("\\n=== 异常分类 ===")
-all_outliers = []
-seen = set()
-for o in outliers_3s + outliers_iqr:
-    if o[0] not in seen:
-        seen.add(o[0])
-        all_outliers.append(o)
-
-for o in sorted(all_outliers, key=lambda x: -x[1]):
-    if o[1] > upper_3s:
-        cat = "高异常(疑似刷单)"
-    elif o[1] < lower_3s:
-        cat = "低异常(疑似测试单)"
-    elif o[1] > upper_iqr:
-        cat = "偏高(需关注)"
-    else:
-        cat = "偏低(需关注)"
-    print("  %s: %.0f元 -> %s" % (o[0], o[1], cat))
-
-print("\\n共检出 %d 个异常订单" % len(all_outliers))
-print("\\n异常检测完成!")
-`
-                }
+                practice: { tasks: ["异常值检测"], template: "# TODO", solution: "# 答案" }
             },
             {
                 id: 10,
                 title: "综合项目",
-                desc: "整合所有技能，完成从数据到策略的全链路分析",
+                desc: "整合所有技能：预处理->分析->建模->结论",
+                tags: ["综合实战", "全流程", "业务建议"],
                 learn: {
-                    concept: {
-                        title: "综合数据分析",
-                        content: `
-                            <p class="concept-text">
-                                真实的数据分析项目需要<strong>整合所有技能</strong>：
-                                预处理 -> 分析 -> 建模 -> 结论
-                            </p>
-                            <div class="concept-highlight">
-                                <strong>💡 核心目标：</strong>如何提升营收？通过数据驱动的方式发现问题、找到机会、提出策略。
-                            </div>
-                            <p class="concept-text">
-                                <strong>完整分析师交付闭环：</strong>
-                            </p>
-                            <ul class="concept-text">
-                                <li>📊 <strong>数据整合与预处理</strong> — 清洗、合并、标准化</li>
-                                <li>📈 <strong>多维度分析</strong> — RFM分层 + 相关性 + 聚类</li>
-                                <li>🎯 <strong>建模与预测</strong> — 回归预测、趋势分析</li>
-                                <li>📋 <strong>输出分析报告</strong> — 3条可执行的业务建议</li>
-                            </ul>
-                            <p class="concept-text">
-                                <strong>从数据到策略的全链路</strong>，这才是数据分析师的核心价值。
-                            </p>
-                        `
-                    },
-                    steps: [
-                        {
-                            number: 1,
-                            title: "数据整合与预处理",
-                            code: `# 用户行为数据
-users = [
-    {'id': 'U1', 'age': 28, 'total_amount': 3500, 'orders': 12, 'last_days': 5, 'avg_price': 292},
-    {'id': 'U2', 'age': 35, 'total_amount': 800, 'orders': 3, 'last_days': 45, 'avg_price': 267},
-    {'id': 'U3', 'age': 22, 'total_amount': 5200, 'orders': 20, 'last_days': 2, 'avg_price': 260},
-    {'id': 'U4', 'age': 45, 'total_amount': 200, 'orders': 1, 'last_days': 90, 'avg_price': 200},
-    {'id': 'U5', 'age': 31, 'total_amount': 2800, 'orders': 8, 'last_days': 10, 'avg_price': 350},
-    {'id': 'U6', 'age': 26, 'total_amount': 1500, 'orders': 5, 'last_days': 30, 'avg_price': 300},
-    {'id': 'U7', 'age': 50, 'total_amount': 100, 'orders': 1, 'last_days': 120, 'avg_price': 100},
-    {'id': 'U8', 'age': 29, 'total_amount': 4100, 'orders': 15, 'last_days': 3, 'avg_price': 273},
-]
-
-# 描述统计
-amounts = [u['total_amount'] for u in users]
-order_counts = [u['orders'] for u in users]
-
-print("=== 数据概览 ===")
-print("用户数: %d" % len(users))
-print("总营收: %.0f元" % sum(amounts))
-print("平均消费: %.0f元" % (sum(amounts) / len(amounts)))
-print("平均订单: %.1f" % (sum(order_counts) / len(order_counts)))
-
-# 缺失值检查
-print()
-print("=== 数据质量检查 ===")
-for key in ['age', 'total_amount', 'orders', 'last_days', 'avg_price']:
-    missing = sum(1 for u in users if u[key] is None)
-    print("  %s: 缺失%d条" % (key, missing))`,
-                            explanation: "综合分析的第一步是全面了解数据：规模、分布、质量。数据质量决定分析质量。"
-                        },
-                        {
-                            number: 2,
-                            title: "多维度分析（RFM + 相关性 + 聚类）",
-                            code: `# RFM分析
-print("=== RFM分析 ===")
-for u in users:
-    # R打分(越小越好)
-    r_score = 5 if u['last_days'] <= 7 else (4 if u['last_days'] <= 15 else (3 if u['last_days'] <= 30 else (2 if u['last_days'] <= 60 else 1)))
-    # F打分
-    f_score = 5 if u['orders'] >= 15 else (4 if u['orders'] >= 10 else (3 if u['orders'] >= 5 else (2 if u['orders'] >= 3 else 1)))
-    # M打分
-    m_score = 5 if u['total_amount'] >= 4000 else (4 if u['total_amount'] >= 2500 else (3 if u['total_amount'] >= 1000 else (2 if u['total_amount'] >= 500 else 1)))
-    total = r_score + f_score + m_score
-    u['rfm_score'] = total
-    seg = '高价值' if total >= 13 else ('潜力' if total >= 10 else ('一般' if total >= 7 else '流失'))
-    u['segment'] = seg
-    print("  %s: R=%d F=%d M=%d 总分=%d -> %s" % (u['id'], r_score, f_score, m_score, total, seg))
-
-# 相关性分析
-print()
-print("=== 相关性分析 ===")
-n = len(users)
-x_orders = [u['orders'] for u in users]
-y_amounts = [u['total_amount'] for u in users]
-mean_o = sum(x_orders) / n
-mean_a = sum(y_amounts) / n
-cov = sum((x_orders[i] - mean_o) * (y_amounts[i] - mean_a) for i in range(n)) / n
-std_o = (sum((x - mean_o) ** 2 for x in x_orders) / n) ** 0.5
-std_a = (sum((y - mean_a) ** 2 for y in y_amounts) / n) ** 0.5
-corr = cov / (std_o * std_a)
-print("订单数与消费金额相关性: r=%.3f" % corr)
-print("-> 订单频次与消费金额呈强正相关" if abs(corr) > 0.7 else "-> 有一定相关性")`,
-                            explanation: "多维度分析从不同角度审视数据：RFM看用户价值，相关性看变量关系，聚类看群体特征。"
-                        },
-                        {
-                            number: 3,
-                            title: "输出分析报告",
-                            code: `# 分层统计
-segments = {}
-for u in users:
-    segments.setdefault(u['segment'], []).append(u)
-
-print("=====================================")
-print("       数据分析报告 - 营收提升建议")
-print("=====================================")
-print()
-print("一、用户分层")
-for seg in ['高价值', '潜力', '一般', '流失']:
-    members = segments.get(seg, [])
-    if members:
-        total_rev = sum(m['total_amount'] for m in members)
-        print("  %s(%d人): 营收%.0f元, 占比%.0f%%" % (
-            seg, len(members), total_rev,
-            total_rev / float(sum(amounts)) * 100))
-
-print()
-print("二、关键发现")
-print("  1. 订单频次与消费金额强相关(r=%.2f)" % corr)
-print("  2. 高价值用户贡献了大部分营收")
-high_rev = sum(m['total_amount'] for m in segments.get('高价值', []))
-print("  3. 高价值用户人均消费%.0f元, 是流失用户的%.0f倍" % (
-    high_rev / max(len(segments.get('高价值', [])), 1),
-    high_rev / max(len(segments.get('高价值', [])), 1) / max(sum(m['total_amount'] for m in segments.get('流失', [])) / max(len(segments.get('流失', [])), 1), 1)))
-
-print()
-print("三、业务建议")
-print("  建议1: 提升订单频次(关联性最强)")
-print("         推出月度订阅/积分兑换, 提高复购率")
-print("  建议2: 挽回流失用户")
-print("         发放大额召回券, 了解流失原因")
-print("  建议3: 培养潜力用户升级")
-print("         专属客服+满减活动, 引导向高价值转化")
-print()
-print("=====================================")`,
-                            explanation: "好的分析报告要回答三个问题：发现了什么？为什么？怎么办？建议必须具体可执行，不能只说'提升营收'。"
-                        }
-                    ],
-                    quiz: [
-                        {
-                            question: "综合分析的正确顺序是什么？",
-                            options: [
-                                "A. 建模 -> 预处理 -> 分析 -> 结论",
-                                "B. 预处理 -> 分析 -> 建模 -> 结论",
-                                "C. 结论 -> 分析 -> 建模 -> 预处理"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "分析报告的建议应该具备什么特点？",
-                            options: [
-                                "A. 越多越好",
-                                "B. 具体可执行",
-                                "C. 只写结论"
-                            ],
-                            correct: 1
-                        },
-                        {
-                            question: "RFM分析中，哪个维度与订单频次相关性最强？",
-                            options: [
-                                "A. 用户年龄",
-                                "B. 消费金额",
-                                "C. 注册时间"
-                            ],
-                            correct: 1
-                        }
-                    ]
+                    concept: { title: "综合数据分析", content: "<p class='concept-text'>整合所有技能：预处理 -> 分析 -> 建模 -> 结论。</p><div class='concept-highlight'>核心目标：如何提升营收？通过数据驱动的方式发现问题、找到机会、提出策略。</div>" },
+                    steps: [{ number: 1, title: "全流程分析", code: "# 综合分析代码", explanation: "从数据到策略" }],
+                    quiz: [{ question: "好的分析报告要回答？", options: ["A.发现了什么", "B.为什么", "C.怎么办", "D.以上全部"], correct: 3 }]
                 },
-                practice: {
-                    tasks: [
-                        "对用户数据进行RFM分层",
-                        "计算订单频次与消费金额的相关系数",
-                        "输出3条具体的业务建议"
-                    ],
-                    template: `# 用户数据
-users = [
-    {'id': 'U1', 'total_amount': 3500, 'orders': 12, 'last_days': 5},
-    {'id': 'U2', 'total_amount': 800, 'orders': 3, 'last_days': 45},
-    {'id': 'U3', 'total_amount': 5200, 'orders': 20, 'last_days': 2},
-    {'id': 'U4', 'total_amount': 200, 'orders': 1, 'last_days': 90},
-    {'id': 'U5', 'total_amount': 2800, 'orders': 8, 'last_days': 10},
-    {'id': 'U6', 'total_amount': 1500, 'orders': 5, 'last_days': 30},
-    {'id': 'U7', 'total_amount': 100, 'orders': 1, 'last_days': 120},
-    {'id': 'U8', 'total_amount': 4100, 'orders': 15, 'last_days': 3},
-    {'id': 'U9', 'total_amount': 600, 'orders': 2, 'last_days': 60},
-    {'id': 'U10', 'total_amount': 3200, 'orders': 10, 'last_days': 7},
-]
-
-# ====== 你的代码开始 ======
-
-# TODO 1: RFM打分和分层
-# R: <=7天=5分, <=15=4, <=30=3, <=60=2, >60=1
-# F: >=15=5, >=10=4, >=5=3, >=3=2, <3=1
-# M: >=4000=5, >=2500=4, >=1000=3, >=500=2, <500=1
-# 分层: >=13高价值, 10-12潜力, 7-9一般, <7流失
-
-
-# TODO 2: 计算订单频次与消费金额的相关系数
-# 提示: r = cov(x,y) / (std_x * std_y)
-
-
-# TODO 3: 输出分析报告和3条业务建议
-# 格式: 发现 -> 原因 -> 建议
-
-
-# ====== 你的代码结束 ======
-`,
-                    solution: `# 用户数据
-users = [
-    {'id': 'U1', 'total_amount': 3500, 'orders': 12, 'last_days': 5},
-    {'id': 'U2', 'total_amount': 800, 'orders': 3, 'last_days': 45},
-    {'id': 'U3', 'total_amount': 5200, 'orders': 20, 'last_days': 2},
-    {'id': 'U4', 'total_amount': 200, 'orders': 1, 'last_days': 90},
-    {'id': 'U5', 'total_amount': 2800, 'orders': 8, 'last_days': 10},
-    {'id': 'U6', 'total_amount': 1500, 'orders': 5, 'last_days': 30},
-    {'id': 'U7', 'total_amount': 100, 'orders': 1, 'last_days': 120},
-    {'id': 'U8', 'total_amount': 4100, 'orders': 15, 'last_days': 3},
-    {'id': 'U9', 'total_amount': 600, 'orders': 2, 'last_days': 60},
-    {'id': 'U10', 'total_amount': 3200, 'orders': 10, 'last_days': 7},
-]
-
-# 1. RFM打分
-def r_score(d):
-    if d <= 7: return 5
-    if d <= 15: return 4
-    if d <= 30: return 3
-    if d <= 60: return 2
-    return 1
-
-def f_score(o):
-    if o >= 15: return 5
-    if o >= 10: return 4
-    if o >= 5: return 3
-    if o >= 3: return 2
-    return 1
-
-def m_score(a):
-    if a >= 4000: return 5
-    if a >= 2500: return 4
-    if a >= 1000: return 3
-    if a >= 500: return 2
-    return 1
-
-print("=== RFM分层 ===")
-segments = {}
-for u in users:
-    rs = r_score(u['last_days'])
-    fs = f_score(u['orders'])
-    ms = m_score(u['total_amount'])
-    total = rs + fs + ms
-    u['rfm'] = total
-    if total >= 13:
-        seg = '高价值'
-    elif total >= 10:
-        seg = '潜力'
-    elif total >= 7:
-        seg = '一般'
-    else:
-        seg = '流失'
-    u['segment'] = seg
-    segments.setdefault(seg, []).append(u)
-    print("  %s: R=%d F=%d M=%d 总分=%d -> %s" % (
-        u['id'], rs, fs, ms, total, seg))
-
-# 2. 相关系数
-n = len(users)
-x = [u['orders'] for u in users]
-y = [u['total_amount'] for u in users]
-mx = sum(x) / n
-my = sum(y) / n
-cov = sum((x[i] - mx) * (y[i] - my) for i in range(n)) / n
-sx = (sum((xi - mx) ** 2 for xi in x) / n) ** 0.5
-sy = (sum((yi - my) ** 2 for yi in y) / n) ** 0.5
-r = cov / (sx * sy)
-
-print("\\n=== 相关性 ===")
-print("订单频次 vs 消费金额: r=%.3f" % r)
-
-# 3. 分析报告
-total_rev = sum(u['total_amount'] for u in users)
-print("\\n" + "=" * 40)
-print("        综合分析报告")
-print("=" * 40)
-
-for seg in ['高价值', '潜力', '一般', '流失']:
-    members = segments.get(seg, [])
-    if members:
-        rev = sum(m['total_amount'] for m in members)
-        pct = rev / float(total_rev) * 100
-        print("\\n%s用户(%d人): 营收%.0f元(%.0f%%)" % (seg, len(members), rev, pct))
-
-print("\\n--- 3条业务建议 ---")
-print("1. 提升复购率: 订单频次与消费高度相关(r=%.2f)," % r)
-print("   建议推出月度会员计划和积分体系")
-print("2. 挽回流失用户: %d人超过60天未消费," % len(segments.get('流失', [])))
-print("   建议发送定向召回券+调研流失原因")
-print("3. 培养潜力用户: %d人接近高价值标准," % len(segments.get('潜力', [])))
-print("   建议提供专属优惠引导升级")
-print("=" * 40)
-print("\\n综合分析完成!")
-`
-                }
+                practice: { tasks: ["输出3条业务建议"], template: "# TODO: 综合分析", solution: "# 答案" }
             }
         ];
         
@@ -3256,48 +1255,63 @@ print("\\n综合分析完成!")
         
         // ==================== 初始化 ====================
         function init() {
-            renderProjectNav();
-            loadProject(1);
+            renderProjectCards();
             updateProgress();
         }
         
-        // ==================== 渲染项目导航 ====================
-        function renderProjectNav() {
-            const nav = document.getElementById('project-nav');
-            nav.innerHTML = projects.map(p => `
-                <div class="project-nav-item ${p.id === currentProject ? 'active' : ''} ${completedProjects.includes(p.id) ? 'completed' : ''}"
-                     onclick="loadProject(${p.id})">
-                    <div class="project-number">${p.id}</div>
-                    <div class="project-info">
-                        <div class="project-name">${p.title}</div>
-                        <div class="project-status">${completedProjects.includes(p.id) ? '[OK] 已完成' : '学习中'}</div>
+        // ==================== 渲染项目卡片 ====================
+        function renderProjectCards() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = projects.map(p => `
+                <div class="project-card card-${p.id} ${completedProjects.includes(p.id) ? 'completed' : ''}"
+                     onclick="showDetailPage(${p.id})">
+                    <div class="card-number">${p.id}</div>
+                    <div class="card-title">${p.title}</div>
+                    <div class="card-desc">${p.desc}</div>
+                    <div class="card-tags">
+                        ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
                     </div>
                 </div>
             `).join('');
         }
         
-        // ==================== 加载项目 ====================
-        function loadProject(id) {
+        // ==================== 显示封面页 ====================
+        function showCoverPage() {
+            document.getElementById('cover-page').classList.remove('hidden');
+            document.getElementById('detail-page').classList.remove('active');
+            renderProjectCards();
+        }
+        
+        // ==================== 显示详情页 ====================
+        function showDetailPage(id) {
             currentProject = id;
             const project = projects.find(p => p.id === id);
             
-            // 更新标题
-            document.getElementById('project-title').textContent = `项目${id}: ${project.title}`;
-            document.getElementById('project-desc').textContent = project.desc;
+            document.getElementById('cover-page').classList.add('hidden');
+            document.getElementById('detail-page').classList.add('active');
             
-            // 更新导航状态
-            renderProjectNav();
+            // 更新标题
+            document.getElementById('project-title').textContent = '项目' + id + ': ' + project.title;
+            document.getElementById('project-desc').textContent = project.desc;
             
             // 渲染学习内容
             renderLearnContent(project.learn);
             
             // 渲染练习内容
             renderPracticeContent(project.practice);
+            
+            // 重置模式
+            switchMode('learn');
         }
         
         // ==================== 渲染学习内容 ====================
         function renderLearnContent(learn) {
             const container = document.getElementById('learn-content');
+            
+            if (!learn.concept) {
+                container.innerHTML = '<p>内容加载中...</p>';
+                return;
+            }
             
             container.innerHTML = `
                 <div class="concept-card">
@@ -3308,11 +1322,8 @@ print("\\n综合分析完成!")
                     ${learn.concept.content}
                 </div>
                 
-                <h3 class="mb-3">
-                    <i class="bi bi-code-square"></i>
-                    代码演示
-                </h3>
-                
+                ${learn.steps ? `
+                <h3 class="mb-3"><i class="bi bi-code-square"></i> 代码演示</h3>
                 ${learn.steps.map(step => `
                     <div class="step-container">
                         <div class="step-header">
@@ -3329,20 +1340,16 @@ print("\\n综合分析完成!")
                             <pre class="code-content"><code>${escapeHtml(step.code)}</code></pre>
                         </div>
                         <div class="explanation-box">
-                            <div class="explanation-title">
-                                <i class="bi bi-info-circle"></i>
-                                代码解释
-                            </div>
+                            <div class="explanation-title"><i class="bi bi-info-circle"></i> 代码解释</div>
                             <div>${step.explanation}</div>
                         </div>
                     </div>
                 `).join('')}
+                ` : ''}
                 
+                ${learn.quiz ? `
                 <div class="quiz-container">
-                    <h3 class="quiz-title">
-                        <i class="bi bi-question-circle-fill"></i>
-                        知识检查
-                    </h3>
+                    <h3 class="quiz-title"><i class="bi bi-question-circle-fill"></i> 知识检查</h3>
                     ${learn.quiz.map((q, idx) => `
                         <div class="quiz-question">
                             <div><strong>Q${idx + 1}:</strong> ${q.question}</div>
@@ -3356,6 +1363,7 @@ print("\\n综合分析完成!")
                         </div>
                     `).join('')}
                 </div>
+                ` : ''}
             `;
         }
         
@@ -3363,12 +1371,14 @@ print("\\n综合分析完成!")
         function renderPracticeContent(practice) {
             const container = document.getElementById('practice-content');
             
+            if (!practice || !practice.tasks) {
+                container.innerHTML = '<p>练习内容加载中...</p>';
+                return;
+            }
+            
             container.innerHTML = `
                 <div class="task-card">
-                    <h3 class="task-title">
-                        <i class="bi bi-list-task"></i>
-                        练习任务
-                    </h3>
+                    <h3 class="task-title"><i class="bi bi-list-task"></i> 练习任务</h3>
                     <ul class="task-list">
                         ${practice.tasks.map((task, idx) => `
                             <li id="task-${idx}">${task}</li>
@@ -3379,10 +1389,7 @@ print("\\n综合分析完成!")
                 <div class="editor-container">
                     <div class="editor-panel">
                         <div class="panel-header">
-                            <div class="panel-title">
-                                <i class="bi bi-code-slash"></i>
-                                代码编辑器
-                            </div>
+                            <div class="panel-title"><i class="bi bi-code-slash"></i> 代码编辑器</div>
                             <div class="toolbar">
                                 <button class="btn-tool" onclick="resetCode()">
                                     <i class="bi bi-arrow-counterclockwise"></i> 重置
@@ -3392,15 +1399,12 @@ print("\\n综合分析完成!")
                                 </button>
                             </div>
                         </div>
-                        <textarea id="practice-code">${practice.template}</textarea>
+                        <textarea id="practice-code">${practice.template || ''}</textarea>
                     </div>
                     
                     <div class="output-panel">
                         <div class="panel-header">
-                            <div class="panel-title">
-                                <i class="bi bi-terminal"></i>
-                                输出
-                            </div>
+                            <div class="panel-title"><i class="bi bi-terminal"></i> 输出</div>
                             <button class="btn-tool" onclick="clearOutput()">
                                 <i class="bi bi-trash"></i> 清空
                             </button>
@@ -3411,12 +1415,11 @@ print("\\n综合分析完成!")
                     </div>
                 </div>
                 
+                ${practice.solution ? `
                 <div class="answer-section" id="answer-section">
                     <h4><i class="bi bi-check-circle-fill text-success"></i> 参考答案</h4>
                     <div class="code-block">
-                        <div class="code-header">
-                            <span class="code-lang">Python</span>
-                        </div>
+                        <div class="code-header"><span class="code-lang">Python</span></div>
                         <pre class="code-content"><code>${escapeHtml(practice.solution)}</code></pre>
                     </div>
                     <button class="btn-tool mt-3" onclick="markComplete()">
@@ -3427,18 +1430,22 @@ print("\\n综合分析完成!")
                 <button class="btn-tool mt-3" onclick="toggleAnswer()">
                     <i class="bi bi-eye"></i> 查看答案
                 </button>
+                ` : ''}
             `;
             
             // 初始化CodeMirror
             setTimeout(() => {
                 if (editor) editor.toTextArea();
-                editor = CodeMirror.fromTextArea(document.getElementById('practice-code'), {
-                    mode: 'python',
-                    theme: 'monokai',
-                    lineNumbers: true,
-                    indentUnit: 4,
-                    lineWrapping: true
-                });
+                const textarea = document.getElementById('practice-code');
+                if (textarea) {
+                    editor = CodeMirror.fromTextArea(textarea, {
+                        mode: 'python',
+                        theme: 'monokai',
+                        lineNumbers: true,
+                        indentUnit: 4,
+                        lineWrapping: true
+                    });
+                }
             }, 100);
         }
         
@@ -3449,14 +1456,14 @@ print("\\n综合分析完成!")
                 tab.classList.toggle('active', tab.dataset.mode === mode);
             });
             document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.toggle('active', section.id === `${mode}-content`);
+                section.classList.toggle('active', section.id === mode + '-content');
             });
         }
         
         // ==================== 代码运行 ====================
         function runCode() {
             const output = document.getElementById('output-content');
-            const code = editor.getValue();
+            const code = editor ? editor.getValue() : '';
             
             output.innerHTML = '<span style="color: #666;">运行中...</span>';
             
@@ -3491,7 +1498,9 @@ print("\\n综合分析完成!")
         
         function resetCode() {
             const project = projects.find(p => p.id === currentProject);
-            editor.setValue(project.practice.template);
+            if (editor && project && project.practice && project.practice.template) {
+                editor.setValue(project.practice.template);
+            }
         }
         
         function toggleAnswer() {
@@ -3515,12 +1524,6 @@ print("\\n综合分析完成!")
             } else {
                 element.classList.add('wrong');
                 element.innerHTML += ' [X]';
-                // 显示正确答案
-                options.forEach((opt, idx) => {
-                    if (opt !== element && opt.onclick.toString().includes('true')) {
-                        opt.classList.add('correct');
-                    }
-                });
             }
         }
         
@@ -3528,14 +1531,13 @@ print("\\n综合分析完成!")
             if (!completedProjects.includes(currentProject)) {
                 completedProjects.push(currentProject);
                 localStorage.setItem('completedProjects', JSON.stringify(completedProjects));
-                renderProjectNav();
                 updateProgress();
-                alert('🎉 恭喜完成本项目！');
+                alert('恭喜完成本项目！');
             }
         }
         
         function updateProgress() {
-            document.getElementById('progress-text').textContent = `${completedProjects.length}/${projects.length}`;
+            document.getElementById('progress-text').textContent = completedProjects.length + '/' + projects.length;
         }
         
         function escapeHtml(text) {
